@@ -13,3 +13,4 @@ git clone https://github.com/grheine/IN_hls4ml.git
 cd IN_hls4ml
 jupyter notebook IN_pipeline.ipynb
 ```
+A larger data sample of 30.000 events can be downloaded here https://etpwww.etp.kit.edu/~grheine/raw.h5
