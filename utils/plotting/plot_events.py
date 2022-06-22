@@ -5,8 +5,9 @@ from ..data.graphdata import GraphDataset
 
 class plot_information:
     
-    def __init__(self, events=None):
+    def __init__(self, events=None, graphs=None):
         self.events = events
+        self.graphs = graphs
 
     def plot_ntracks_nhits(self):
         # check how many particles and hits there are per event
@@ -19,20 +20,74 @@ class plot_information:
 
         plt.figure(figsize=(12,5))
         plt.subplot(121)
-        plt.hist(particles, histtype='stepfilled', facecolor=(0,0,0,0))
+        hist = plt.hist(particles, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
+        plt.xlim(hist[1][0], hist[1][-1])
         plt.xlabel("particles per event", fontsize=15)
         plt.ylabel("counts", fontsize=15)
         watermark(py=0.9, fontsize=15, shift=0.2)
         plt.subplot(122)
-        plt.hist(hits, histtype='stepfilled', facecolor=(0,0,0,0))
+        hist = plt.hist(hits, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
+        plt.xlim(hist[1][0], hist[1][-1])
         plt.xlabel("hits per event", fontsize=15)
         plt.ylabel("counts", fontsize=15)
         watermark(py=0.9, fontsize=15, shift=0.2)
         plt.subplots_adjust(wspace=0.3)
         plt.savefig("img/NtracksAndHits.pdf")
         plt.show()
+        
+    def plot_graph_information(self):
+        plt.style.use("kit_hist")
+        
+        nodes, edges, _, _, _ = self.graphs[0]
+        nedges, nnodes = [], []
+
+
+
+        for g in self.graphs:
+            nodes = np.concatenate((nodes, g.x))
+            edges = np.concatenate((edges, g.edge_attr), axis=1)
+            nedges.append(len(g.y))
+            nnodes.append(len(g.x))
+        
+        plt.figure()
+        plt.subplot(121)
+        hist1 = plt.hist(nodes, label=['x','z','theta','isochrone'], histtype='stepfilled', facecolor=(0,0,0,0), stacked=True)
+        plt.yscale("log")
+        plt.xlabel("node attributes")
+        plt.ylabel("counts")
+        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
+        watermark(shift=0.2)
+        plt.subplot(122)
+        hist2 = plt.hist(edges.T, label=['dx','dz','dtheta'], histtype='stepfilled', facecolor=(0,0,0,0), stacked=True)
+        plt.yscale("log")
+        plt.xlabel("edge attributes")
+        plt.ylabel("counts")
+        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
+        watermark(shift=0.2)
+        plt.subplots_adjust(wspace=0.3)
+        plt.savefig("img/graphdata.pdf")
+        plt.show()
+    
+        plt.figure()
+        plt.subplot(121)
+        hist3 = plt.hist(nnodes, histtype='stepfilled', facecolor=(0,0,0,0))
+        plt.yscale("log")
+        plt.xlabel("# nodes")
+        plt.ylabel("counts")
+        watermark(shift=0.2)
+        plt.subplot(122)
+        hist4 = plt.hist(nedges, histtype='stepfilled', facecolor=(0,0,0,0))
+        plt.yscale("log")
+        plt.xlabel("# edges")
+        plt.ylabel("counts")
+        watermark(shift=0.2)
+        plt.subplots_adjust(wspace=0.3)
+        plt.savefig("img/NnodesAndEdges.pdf")
+        plt.show()      
+        
+        
 
 class plot_event:
     

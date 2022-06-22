@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def watermark(t=None,logo="PANDA", px=0.033, py=0.915, fontsize=18, alpha=0.8, alpha_logo=0.95, shift=0.16, bstyle='italic', scale = 1.4, *args, **kwargs):
+def watermark(t=None,logo="PANDA", px=0.033, py=0.9, fontsize=18, alpha=0.8, alpha_logo=0.95, shift=0.16, bstyle='italic', scale = 1.4, *args, **kwargs):
     """
     Args:
         t:

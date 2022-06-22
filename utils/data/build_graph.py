@@ -71,7 +71,7 @@ class build_graphs:
 
     def create_graph_list(self, dtype=object):
         evs = self.events
-        feature_scale = np.array([10., 100., 0.01, 0.1])
+        feature_scale = np.array([20., 100., 0.1, 0.1])
         hits = evs[['x','z', 'theta', 'iso']]/feature_scale
 
         gb = evs[['hit_id','theta','layer','particle_id','iso','x','z']].groupby('event_id')
@@ -88,7 +88,7 @@ class build_graphs:
                 continue
             dfhits = hits.loc[idx]
             segments = []
-            dx, dz, dtheta, diso = [], [], [], []
+            dx, dz, dtheta = [], [], []
             y        = []
             data     = df.to_numpy()
             
@@ -99,7 +99,6 @@ class build_graphs:
                     Dx = data_j[-2]-data_i[-2]
                     Dz = data_j[-1]-data_i[-1]
                     Dtheta = data_j[1]-data_i[1]
-                    Diso = data_j[-3]-data_i[-3]
                     angle = Dx/Dz 
                     if (abs(angle)>self.slope): continue
                         
@@ -107,17 +106,16 @@ class build_graphs:
                     dx.append(Dx)
                     dz.append(Dz)
                     dtheta.append(Dtheta)
-                    diso.append(Diso)
                     y.append(int(data_i[3]==data_j[3]))
                     
             if (segments==[]): continue
             n_hits = len(dfhits)            
             n_edges = len(segments)
             
-            X = dfhits.values.astype(np.float32)
-            edge_attr = np.stack((dx, dz, dtheta, diso))/feature_scale[:,np.newaxis]
+            X = dfhits.values
+            edge_attr = (np.stack((dx, dz, dtheta))/feature_scale[:3,np.newaxis])
             edge_index = np.array(np.vstack(segments).T)
-            y = np.array(y, dtype=np.int32)
+            y = np.array(y, dtype=np.int8)
             pid = df.particle_id
             G = Graph(X, edge_attr, edge_index, y, pid)
             graphs.append(G)
