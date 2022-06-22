@@ -7,7 +7,7 @@ conda env create -f deep_tracking_env.yml python=3.9
 conda activate deep_tracking
 pip install -e .
 ```
-* included are also 2 style files for the matplotlib figures in the directory files. These can also be installed manually in your matplotlib installation . 
+* included are also 2 style files for the matplotlib figures in the directory files. These can also be installed manually in your matplotlib installation. 
 
 To test the code run the pipeline:
 ```
