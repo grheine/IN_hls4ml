@@ -51,7 +51,7 @@ class plot_information:
             nedges.append(len(g.y))
             nnodes.append(len(g.x))
         
-        plt.figure()
+        plt.figure(figsize=(15,5))
         plt.subplot(121)
         hist1 = plt.hist(nodes, label=['x','z','theta','isochrone'], histtype='stepfilled', facecolor=(0,0,0,0), stacked=True)
         plt.yscale("log")
@@ -70,7 +70,7 @@ class plot_information:
         plt.savefig("img/graphdata.pdf")
         plt.show()
     
-        plt.figure()
+        plt.figure(figsize=(15,5))
         plt.subplot(121)
         hist3 = plt.hist(nnodes, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
@@ -85,7 +85,19 @@ class plot_information:
         watermark(shift=0.2)
         plt.subplots_adjust(wspace=0.3)
         plt.savefig("img/NnodesAndEdges.pdf")
-        plt.show()      
+        plt.show()  
+    
+    def plot_purity_efficiency(self, cuts, purity, efficiency, xname, yname):           
+        plt.style.use("kit") 
+        
+        plt.plot(cuts, purity, label='purity', marker='None')
+        plt.plot(cuts, efficiency, label='efficiency', marker='None')
+        watermark(py=0.9, fontsize=18, shift=0.16)
+        plt.xlabel(xname)
+        plt.ylabel(yname)
+        plt.legend(loc='center right', bbox_to_anchor=(1, 0.91))
+        plt.savefig('img/graphbuilding_purity_efficiency.pdf', bbox_inches='tight')
+        plt.show() 
         
         
 

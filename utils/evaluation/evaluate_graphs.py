@@ -31,7 +31,7 @@ class evaluate_data:
         TNR = [] #correctly removed curlers
         FNR = [] #incorrectly removed no-curlers
 
-        for pz_min in cuts:
+        for pz_min in tqdm(cuts):
             FP = len(curler[curler.pz>pz_min]) #false positive
             TP = len(nocurler[nocurler.pz>pz_min]) #true positive
             purity.append(TP/P)
@@ -136,11 +136,14 @@ class evaluate_graphs():
 
 
         # number of edges labelled as true compared to actual true number of edges 
-        efficiency = torch.sum(y).item()/truth_edges
+        if truth_edges==0:
+            efficiency = 0
+        else:
+            efficiency = torch.sum(y).item()/truth_edges
 #         print('number of labelled true edges', torch.sum(y), 'number of counted true edges', truth_edges)
         # number of true edges to total number of edges 
         purity = torch.sum(y).item()/len(y)
-        if (torch.sum(y).item()/truth_edges > 1.0): 
+        if (efficiency > 1.0): 
             print('\nERROR: Efficiency>1!\n')
             bad_graph.append((graph,hits))
 
@@ -155,14 +158,14 @@ class evaluate_graphs():
         if efficiency > 1: print(result)
         return result, bad_graph
     
-    def evaluate_graphs(self):
+    def evaluate_graphs(self, show_progress=True):
         nevents = len(self.graphs)
         data = self.data
         efficiency, purity = [], []
         bad_graphs = []
 
 #         for evt_id in tqdm(range(nevents)):
-        for graph in tqdm(self.graphs):
+        for graph in tqdm(self.graphs, disable=not(show_progress)):
             evt_id = graph.pid.index.unique()[0]
             df = data.loc[evt_id]
             evaluation, bad_graph = self.evaluate_graph(graph, df)

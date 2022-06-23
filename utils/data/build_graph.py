@@ -69,7 +69,7 @@ class build_graphs:
         return hits.set_index('event_id')
     
 
-    def create_graph_list(self, dtype=object):
+    def create_graph_list(self, show_progress=True, dtype=object):
         evs = self.events
         feature_scale = np.array([20., 100., 0.1, 0.1])
         hits = evs[['x','z', 'theta', 'iso']]/feature_scale
@@ -81,7 +81,7 @@ class build_graphs:
         hitID = []
         Graph = namedtuple('Graph', ['x', 'edge_attr', 'edge_index', 'y', 'pid'])
 
-        for idx in tqdm(gb.groups):
+        for idx in tqdm(gb.groups, disable=not(show_progress)):
             df = gb.get_group(idx)
             if df.empty: 
                 print('no event found')
