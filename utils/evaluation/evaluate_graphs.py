@@ -45,7 +45,8 @@ class evaluate_data:
         plt.style.use("kit")
         cuts = np.linspace(0., 2., self.ncuts)
 
-        fig, ax1 = plt.subplots()
+        fig, ax1 = plt.subplots(figsize=(8,6))
+        
 
         ax1.plot(cuts, purity, marker='None', label='purity')
         ax1.set_ylim(top=1.01)

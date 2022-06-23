@@ -112,8 +112,8 @@ class build_graphs:
             n_hits = len(dfhits)            
             n_edges = len(segments)
             
-            X = dfhits.values
-            edge_attr = (np.stack((dx, dz, dtheta))/feature_scale[:3,np.newaxis])
+            X = dfhits.values.astype(np.float32)
+            edge_attr = np.stack((dx, dz, dtheta))/feature_scale[:3,np.newaxis]
             edge_index = np.array(np.vstack(segments).T)
             y = np.array(y, dtype=np.int8)
             pid = df.particle_id

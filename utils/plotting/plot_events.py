@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
+
 from .plot import watermark
 from ..data.graphdata import GraphDataset
 
@@ -18,21 +20,19 @@ class plot_information:
         hits = nhits.to_numpy().T
         particles = nparticles.to_numpy().T
 
-        plt.figure(figsize=(12,5))
+        plt.figure(figsize=(15,6))
         plt.subplot(121)
         hist = plt.hist(particles, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
-        plt.xlim(hist[1][0], hist[1][-1])
-        plt.xlabel("particles per event", fontsize=15)
-        plt.ylabel("counts", fontsize=15)
-        watermark(py=0.9, fontsize=15, shift=0.2)
+        plt.xlabel("particles per event")
+        plt.ylabel("counts")
+        watermark(py=0.9, shift=0.2)
         plt.subplot(122)
         hist = plt.hist(hits, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
-        plt.xlim(hist[1][0], hist[1][-1])
-        plt.xlabel("hits per event", fontsize=15)
-        plt.ylabel("counts", fontsize=15)
-        watermark(py=0.9, fontsize=15, shift=0.2)
+        plt.xlabel("hits per event")
+        plt.ylabel("counts")
+        watermark(py=0.9, shift=0.2)
         plt.subplots_adjust(wspace=0.3)
         plt.savefig("img/NtracksAndHits.pdf")
         plt.show()
@@ -45,13 +45,13 @@ class plot_information:
 
 
 
-        for g in self.graphs:
+        for g in tqdm(self.graphs):
             nodes = np.concatenate((nodes, g.x))
             edges = np.concatenate((edges, g.edge_attr), axis=1)
             nedges.append(len(g.y))
             nnodes.append(len(g.x))
         
-        plt.figure(figsize=(15,5))
+        plt.figure(figsize=(15,6))
         plt.subplot(121)
         hist1 = plt.hist(nodes, label=['x','z','theta','isochrone'], histtype='stepfilled', facecolor=(0,0,0,0), stacked=True)
         plt.yscale("log")
@@ -70,7 +70,7 @@ class plot_information:
         plt.savefig("img/graphdata.pdf")
         plt.show()
     
-        plt.figure(figsize=(15,5))
+        plt.figure(figsize=(15,6))
         plt.subplot(121)
         hist3 = plt.hist(nnodes, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
@@ -87,15 +87,18 @@ class plot_information:
         plt.savefig("img/NnodesAndEdges.pdf")
         plt.show()  
     
-    def plot_purity_efficiency(self, cuts, purity, efficiency, xname, yname):           
+    def plot_purity_efficiency(self, cuts, cut_pos, purity, efficiency, xname, yname):           
         plt.style.use("kit") 
         
+        plt.figure(figsize=(8,6))
         plt.plot(cuts, purity, label='purity', marker='None')
         plt.plot(cuts, efficiency, label='efficiency', marker='None')
+        plt.axvline(cut_pos, ymax=0.85, linestyle=':', color='black',label=f'best slope cut={cut_pos:.2f}')
+        
         watermark(py=0.9, fontsize=18, shift=0.16)
         plt.xlabel(xname)
         plt.ylabel(yname)
-        plt.legend(loc='center right', bbox_to_anchor=(1, 0.91))
+        plt.legend(loc='center right', bbox_to_anchor=(1, 0.87))
         plt.savefig('img/graphbuilding_purity_efficiency.pdf', bbox_inches='tight')
         plt.show() 
         

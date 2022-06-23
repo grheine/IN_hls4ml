@@ -5,17 +5,17 @@
 
 
 # General Settings
-figure.figsize      : 8.0, 5.5 #6.4, 4.4
+figure.figsize      : 8., 6. #6.4, 4.4
 figure.facecolor    : white
 text.color          : .1
 
 # Fonts
 
-font.size           : 12
-xtick.labelsize     : 12
-ytick.labelsize     : 12
+font.size           : 15
+xtick.labelsize     : 15
+ytick.labelsize     : 15
 axes.labelsize      : 22
-legend.fontsize: 12
+legend.fontsize: 15
 
 axes.labelcolor     : .1
 
