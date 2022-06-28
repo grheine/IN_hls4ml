@@ -160,6 +160,6 @@ class train_model:
         trained_model = copy.deepcopy(self.model)
         trained_model.eval()
         torch.save(trained_model.state_dict(), "models/IN_pyg_state_dict.pt")
-        torch.save(trained_model, 'models/trained_IN.pt')
+        torch.save(trained_model, f'models/trained_IN_neurons_{self.model.hidden_size}.pt')
         
         return  trained_model, losses, accs, disc, test_losses, test_accs

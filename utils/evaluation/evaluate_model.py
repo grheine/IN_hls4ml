@@ -126,7 +126,10 @@ class evaluate_model:
             P = np.sum(self.target)
             npassed = len(self.output[self.output>c])
             TPR.append(TP/P)
-            PPV.append(TP/npassed)
+            if npassed == 0:
+                PPV.append(0)
+            else:
+                PPV.append(TP/npassed)
             
         plt.style.use("kit")        
         plt.plot(cuts, TPR, label='purity', marker='None')
