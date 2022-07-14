@@ -14,7 +14,7 @@ from utils.training.pytorchtools import EarlyStopping
 
 class train_model:
     
-    def __init__(self, train_loader, val_loader, test_loader, model, optimizer, scheduler, device='cpu', batch_size=1000, epochs=30, patience=5):
+    def __init__(self, train_loader, val_loader, test_loader, model, optimizer, scheduler, device='cpu', batch_size=1000, epochs=30, patience=5, name='trained_IN'):
         
         self.model = model
         self.optimizer = optimizer
@@ -26,6 +26,7 @@ class train_model:
         self.batch_size = batch_size
         self.epochs = epochs
         self.patience = patience
+        self.name = name
         self.trained = self.train_model()
 
     def train(self, epoch):
@@ -159,7 +160,7 @@ class train_model:
         #save model
         trained_model = copy.deepcopy(self.model)
         trained_model.eval()
-        torch.save(trained_model.state_dict(), "models/IN_pyg_state_dict.pt")
-        torch.save(trained_model, f'models/trained_IN_neurons_{self.model.hidden_size}.pt')
+        torch.save(trained_model.state_dict(), f"models/{self.name}_state_dict.pt")
+        torch.save(trained_model, f'models/{self.name}_neurons_{self.model.hidden_size}.pt')
         
         return  trained_model, losses, accs, disc, test_losses, test_accs

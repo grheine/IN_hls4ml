@@ -87,19 +87,22 @@ class plot_information:
         plt.savefig("img/NnodesAndEdges.pdf")
         plt.show()  
     
-    def plot_purity_efficiency(self, cuts, cut_pos, purity, efficiency, xname, yname):           
+    def plot_purity_efficiency(self, cuts, cut_pos, purity, efficiency, xname, yname, save_name):           
         plt.style.use("kit") 
         
         plt.figure(figsize=(8,6))
         plt.plot(cuts, purity, label='purity', marker='None')
         plt.plot(cuts, efficiency, label='efficiency', marker='None')
-        plt.axvline(cut_pos, ymax=0.85, linestyle=':', color='black',label=f'best slope cut={cut_pos:.2f}')
+        if cut_pos:
+            plt.axvline(cuts[cut_pos], ymax=0.85, linestyle=':', color='black',label=f'best slope cut={cuts[cut_pos]:.2f}')
+            plt.plot([], [], ' ', label=f'pur = {purity[cut_pos]:.3f}')
+            plt.plot([], [], ' ', label=f'eff = {efficiency[cut_pos]:.3f}')
         
-        watermark(py=0.9, fontsize=18, shift=0.16)
+        watermark(py=0.9, fontsize=18, shift=0.16, scale=1.8)
         plt.xlabel(xname)
         plt.ylabel(yname)
-        plt.legend(loc='center right', bbox_to_anchor=(1, 0.87))
-        plt.savefig('img/graphbuilding_purity_efficiency.pdf', bbox_inches='tight')
+        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
+        plt.savefig(save_name, bbox_inches='tight')
         plt.show() 
         
         
@@ -153,12 +156,21 @@ class plot_event:
 
         for seg in segments:
             id1, id2 = seg
-            x,z,theta,iso = np.vstack((X[int(id1)], X[int(id2)])).T
+            if self.graph.x.shape == 4:
+                x,z,theta,iso = np.vstack((X[int(id1)], X[int(id2)])).T
+            else:
+                x,z,theta = np.vstack((X[int(id1)], X[int(id2)])).T
+                
             plt.plot(z*100, x*10, linewidth=1.0, linestyle='-', marker='None', color='black') 
+
 
         ids = np.unique(self.graph.pid)    
         for ID in ids:
-            x,z,_, iso = X[self.graph.pid==ID].T
+            if self.graph.x.shape == 4:
+                x,z,_, iso = X[self.graph.pid==ID].T
+            else:
+                x,z,_ = X[self.graph.pid==ID].T 
+                
             plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {ID:.0f}')
         self.__plot_display('img/graph_event.pdf', f'event ID = {evID}')
         
@@ -180,12 +192,18 @@ class plot_event:
         for row in p_t:
             id1, id2, output = row
             if output < 0.: continue
-            x,z,theta, iso = np.vstack((X[int(id1)], X[int(id2)])).T
+            if self.graph.x.shape == 4:
+                x,z,theta, iso = np.vstack((X[int(id1)], X[int(id2)])).T
+            else:
+                x,z,theta = np.vstack((X[int(id1)], X[int(id2)])).T                
             plt.plot(z*100, x*10, linewidth=1.0, linestyle='-', marker='None', c=cmap.reversed()(output),) 
 
         ids = np.unique(data.pid.T[1])    
         for ID in ids:
-            x,z,_, iso = X[data.pid.T[1]==ID].T
+            if self.graph.x.shape == 4:
+                x,z,_, iso = X[data.pid.T[1]==ID].T
+            else: 
+                x,z,_ = X[data.pid.T[1]==ID].T
             plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {ID:.0f}')
 
         sm = plt.cm.ScalarMappable(cmap=cmap.reversed())

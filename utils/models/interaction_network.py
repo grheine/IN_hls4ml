@@ -42,16 +42,16 @@ class ObjectModel(nn.Module):
 
 
 class InteractionNetwork(MessagePassing):
-    def __init__(self, node_dim=4, edge_dim=3, hidden_size=20):
+    def __init__(self, hidden_size=30):
         super(InteractionNetwork, self).__init__(aggr='add', flow='source_to_target')
         
-        self.nodeD = node_dim
-        self.edgeD = edge_dim
+        self.nodeD = 3
+        self.edgeD = 4
         self.hidden_size = hidden_size
-        
-        self.R1 = RelationalModel(2*node_dim + edge_dim, edge_dim, hidden_size)
-        self.O = ObjectModel(node_dim + edge_dim, node_dim, hidden_size)
-        self.R2 = RelationalModel(2*node_dim + edge_dim, 1, hidden_size)
+                
+        self.R1 = RelationalModel(10, 4, hidden_size)
+        self.O = ObjectModel(7, 3, hidden_size)
+        self.R2 = RelationalModel(10, 1, hidden_size)
         self.E: Tensor = Tensor()
 
     def forward(self, data: Tensor) -> Tensor:
