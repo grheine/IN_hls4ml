@@ -68,12 +68,15 @@ def truncate_edges(node_attr, edge_attr, edge_index, n_node_max, n_edge_max):
 
     return node_attr, edge_attr_prime, edge_index_prime
 
-def fix_graph_size(node_attr, edge_attr, edge_index, target, n_node_max=112, n_edge_max=148):
+def fix_graph_size(data, n_node_max=112, n_edge_max=148):
     # node_attr: [n_node, node_dim]
     # edge_attr: [n_edge, edge_dim]
     # edge_index: [2, n_edge]
     # first remove edges that connect out-of-bound nodes
-    edge_index = edge_index.T
+    node_attr = data.x
+    edge_attr = data.edge_attr
+    edge_index = data.edge_index.T
+    target = data.y
     
     mask = edge_index[:,0].lt(n_node_max) & edge_index[:,1].lt(n_node_max)
     edge_index = edge_index[mask]

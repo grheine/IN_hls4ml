@@ -1,5 +1,7 @@
 import os
 import numpy as np
+from copy import deepcopy
+from prettytable import PrettyTable
 
 import torch
 import torch.nn as nn
@@ -22,6 +24,9 @@ from abdel.utils.models.interaction_network_pyg import InteractionNetwork
 
 def load_graphs(graph_indir, out_dir, graph_dims, n_graphs):
     
+    n_node_max = graph_dims['n_node']
+    n_edge_max = graph_dims['n_edge']
+    
     Graph = namedtuple('Graph', ['x', 'edge_attr', 'edge_index', 'y', 'pid'])
     graph_files = np.array(os.listdir(graph_indir))
     graph_files = np.array([os.path.join(graph_indir, graph_file) for graph_file in graph_files])
@@ -40,13 +45,18 @@ def load_graphs(graph_indir, out_dir, graph_dims, n_graphs):
     
     graphs = []
     for data in dataset[:n_graphs]:
-        node_attr, edge_attr, edge_index, target, bad_graph = fix_graph_size(data.x, data.edge_attr, data.edge_index,
-                                                                             data.y,
-                                                                             n_node_max=graph_dims['n_node'],
-                                                                             n_edge_max=graph_dims['n_edge'])
+        node_attr, edge_attr, edge_index, target, bad_graph = fix_graph_size(data, n_node_max, n_edge_max)
         if not bad_graph:
             graphs.append(data_wrapper(node_attr, edge_attr, edge_index, target))
     print(f"n_graphs: {len(graphs)}")
+            
+    nodes_kept = np.sum([n<n_node_max for n in n_nodes])
+    edges_kept = np.sum([e<n_edge_max for e in n_edges])
+    
+    print(f'node dimension: {node_attr.shape}, edge dimension: {edge_attr.shape}')
+    print(f'{nodes_kept/n_graphs:.1%} of graphs without truncation of nodes')
+    print(f'{edges_kept/n_graphs:.1%} of graphs without truncation of edges')
+ 
 
     print("writing test bench data for 1st graph")
     data = graphs[0]
@@ -65,9 +75,12 @@ def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_
     if 'dict' in model_dir:
         torch_model = InteractionNetwork(hidden_size=n_neurons)
         torch_model_dict = torch.load(model_dir)
+        torch_model_dict = deepcopy(torch_model_dict)
         torch_model.load_state_dict(torch_model_dict)
     else:
         torch_model = torch.load(model_dir)
+        
+    torch_model.eval()
 
     forward_dict = OrderedDict()
     forward_dict["R1"] = "EdgeBlock"
