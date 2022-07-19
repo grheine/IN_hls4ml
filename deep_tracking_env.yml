@@ -276,7 +276,7 @@ dependencies:
   - python-flatbuffers=2.0=pyhd8ed1ab_0
   - python-xxhash=2.0.2=py39h3811e60_1
   - python_abi=3.9=2_cp39
-  - pytorch=1.10.2=cpu_py39h5e9ed0b_0
+  - pytorch
   - pytorch-mutex=1.0=cuda
   - pytz=2021.3=pyhd8ed1ab_0
   - pyu2f=0.1.5=pyhd8ed1ab_0
@@ -322,7 +322,7 @@ dependencies:
   - tk=8.6.11=h27826a3_1
   - tomli=2.0.1=pyhd8ed1ab_0
   - toolz=0.11.2=pyhd8ed1ab_0
-  - torchvision=0.11.3=cpu_py39h5f8393d_1
+  - torchvision
   - tornado=6.1=py39h3811e60_2
   - tqdm=4.62.3=pyhd8ed1ab_0
   - traitlets=5.1.1=pyhd8ed1ab_0
