@@ -1,0 +1,170 @@
+=====================================================================================================================
+best:
+=====================================================================================================================
+best loss: 0.09841710009348037
+nevents: 29270
+lr: 0.004397547576369956
+batch_size: 22
+hidden_dim: 25
+=====================================================================================================================
+
+
+=====================================================================================================================
+100 events, different hidden dimensions
+=====================================================================================================================
+
+ ---trial for hidden_dim: 1 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.6864367127418518
+lr: 0.0001133301093291706
+gamma: 0.5737359666631646
+step_size: 4
+batch_size: 9
+model saved under /models/best/best_model_hidden_dim_1.pt 
+ 
+
+ ---trial for hidden_dim: 2 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.17808885872364044
+lr: 0.030380565899484676
+gamma: 0.7933861804743662
+step_size: 2
+batch_size: 10
+model saved under /models/best/best_model_hidden_dim_2.pt 
+ 
+
+ ---trial for hidden_dim: 3 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.1275943617026011
+lr: 0.02291163416635913
+gamma: 0.7566248889660417
+step_size: 3
+batch_size: 4
+model saved under /models/best/best_model_hidden_dim_3.pt 
+ 
+
+ ---trial for hidden_dim: 4 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.11018182709813118
+lr: 0.055510708771469124
+gamma: 0.5460691386442126
+step_size: 7
+batch_size: 9
+model saved under /models/best/best_model_hidden_dim_4.pt 
+ 
+
+ ---trial for hidden_dim: 5 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.12322526574134826
+lr: 0.009256317856452867
+gamma: 0.7360171240541943
+step_size: 9
+batch_size: 2
+model saved under /models/best/best_model_hidden_dim_5.pt 
+ 
+
+ ---trial for hidden_dim: 6 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.10082145594060421
+lr: 0.026537289771774733
+gamma: 0.7007247907630494
+step_size: 3
+batch_size: 8
+model saved under /models/best/best_model_hidden_dim_6.pt 
+ 
+
+ ---trial for hidden_dim: 7 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.10607082769274712
+lr: 0.028402755399642984
+gamma: 0.5948743664962141
+step_size: 4
+batch_size: 8
+model saved under /models/best/best_model_hidden_dim_7.pt 
+ 
+
+ ---trial for hidden_dim: 8 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.10963479056954384
+lr: 0.02866314540166373
+gamma: 0.8070621761788045
+step_size: 3
+batch_size: 7
+model saved under /models/best/best_model_hidden_dim_8.pt 
+ 
+
+ ---trial for hidden_dim: 9 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.10820465087890625
+lr: 0.008536190474978875
+gamma: 0.5606650996147562
+step_size: 5
+batch_size: 2
+model saved under /models/best/best_model_hidden_dim_9.pt 
+ 
+
+ ---trial for hidden_dim: 10 at 100 events, 15 epochs, 3 iterations, 100 trials --- 
+best loss: 0.11600702479481698
+lr: 0.010247147738152534
+gamma: 0.7474579655847644
+step_size: 3
+batch_size: 2
+model saved under /models/best/best_model_hidden_dim_10.pt 
+ 
+=====================================================================================================================
+1000 events, different hidden dimensions
+=====================================================================================================================
+
+ ---trial for hidden_dim: 3 at 1000 events, 15 epochs, 3 iterations, 50 trials --- 
+best loss: 0.13531447499990462
+lr: 0.007176289072949484
+gamma: 0.91798330820982
+step_size: 4
+batch_size: 5
+model saved under /models/best/best_model_hidden_dim_3.pt 
+ 
+
+ ---trial for hidden_dim: 4 at 1000 events, 15 epochs, 3 iterations, 50 trials --- 
+best loss: 0.12053375974297524
+lr: 0.003927382406437832
+gamma: 0.6354942235309113
+step_size: 7
+batch_size: 1
+model saved under /models/best/best_model_hidden_dim_4.pt 
+ 
+
+ ---trial for hidden_dim: 5 at 1000 events, 15 epochs, 3 iterations, 50 trials --- 
+best loss: 0.12202115695923567
+lr: 0.010666603731379969
+gamma: 0.979579405205378
+step_size: 3
+batch_size: 1
+model saved under /models/best/best_model_hidden_dim_5.pt 
+ 
+
+ ---trial for hidden_dim: 6 at 1000 events, 15 epochs, 3 iterations, 50 trials --- 
+best loss: 0.11392713020391323
+lr: 0.008445688287199037
+gamma: 0.7882506423503034
+step_size: 2
+batch_size: 3
+model saved under /models/best/best_model_hidden_dim_6.pt 
+ 
+
+ ---trial for hidden_dim: 7 at 1000 events, 15 epochs, 3 iterations, 50 trials --- 
+best loss: 0.1053198803588748
+lr: 0.0065070549464692614
+gamma: 0.6762311518278652
+step_size: 6
+batch_size: 2
+model saved under /models/best/best_model_hidden_dim_7.pt 
+ 
+
+ ---trial for hidden_dim: 8 at 1000 events, 15 epochs, 3 iterations, 50 trials --- 
+best loss: 0.10758786797523498
+lr: 0.010495804942995
+gamma: 0.5034397001396682
+step_size: 6
+batch_size: 2
+model saved under /models/best/best_model_hidden_dim_8.pt 
+ 
+
+ ---trial for hidden_dim: 9 at 1000 events, 15 epochs, 3 iterations, 50 trials --- 
+best loss: 0.10999767979606986
+lr: 0.004960248667488602
+gamma: 0.6031869912357728
+step_size: 7
+batch_size: 1
+model saved under /models/best/best_model_hidden_dim_9.pt 
+ 
