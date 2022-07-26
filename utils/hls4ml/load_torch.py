@@ -20,7 +20,7 @@ from utils.hls4ml.wrappers import data_wrapper, model_wrapper
 from hls4ml.utils.config import config_from_pyg_model
 from hls4ml.converters import convert_from_pyg_model
 
-from abdel.utils.models.interaction_network_pyg import InteractionNetwork
+from utils.models.interaction_network_hls4ml import InteractionNetwork
 
 def load_graphs(graph_indir, out_dir, graph_dims, n_graphs):
     
@@ -100,7 +100,7 @@ def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_
                                        hls_config=config,
                                        part=part
                                        )
-    hls_model.compile()
+#     hls_model.compile()
     
     if hls_only:
         return hls_model

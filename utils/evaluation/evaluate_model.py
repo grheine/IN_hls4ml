@@ -9,9 +9,8 @@ from utils.plotting.plot import watermark
 
 class evaluate_model:
     
-    def __init__(self, device, model, test_data, train_loss=1., val_loss=1., train_acc=0., val_acc=0., cut=0.5, ncuts=100):
+    def __init__(self, model, test_data, train_loss=1., val_loss=1., train_acc=0., val_acc=0., cut=0.5, ncuts=100):
        
-        self.device = 'cpu'
         self.model = model
         self.train_loss = train_loss
         self.val_loss = val_loss
@@ -27,7 +26,7 @@ class evaluate_model:
     def __GNNoutput__(self):
         MCtrue, MCfalse, targets, outputs = [], [], [], []
         for data in self.test_data:
-            data = data.to(self.device)
+            data = data
             target = data.y
             output = self.model(data).squeeze(1).detach().numpy() 
             MCtrue_output = output[target==True]

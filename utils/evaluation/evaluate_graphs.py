@@ -36,14 +36,15 @@ class evaluate_data:
             TP = len(nocurler[nocurler.pz>pz_min]) #true positive
             purity.append(TP/P)
             efficiency.append(TP/(TP+FP))
-            TNR.append(1 - FP/N)
-            FNR.append(1 - TP/P)
-        return purity, efficiency, TNR, FNR
+            
+        cutPos =  np.argmax((np.array(purity)+np.array(efficiency))[1:]) +1
+        best_cut = cuts[cutPos]
+        print(f'best pz cut at {best_cut}')
+        return purity, efficiency, cuts, cutPos
 
-    def plot_pzcut(self, cutPos=2):
-        purity, efficiency, TNR, FNR = self.find_pzcut()
+    def plot_pzcut(self):
         plt.style.use("kit")
-        cuts = np.linspace(0., 2., self.ncuts)
+        purity, efficiency, cuts, cutPos = self.find_pzcut()
 
         fig, ax1 = plt.subplots(figsize=(8,6))
         
@@ -68,6 +69,8 @@ class evaluate_data:
         ax2.legend(lines + lines2, labels + labels2, loc='upper right', fontsize=14, frameon = True, framealpha = 0.6, facecolor = 'white', edgecolor = 'white')
         plt.savefig('img/pz_cut.pdf', bbox_inches='tight')
         plt.show()
+        
+        return cuts, purity, efficiency
 
     def curler_dist(self):
         hits = self.hits_curler

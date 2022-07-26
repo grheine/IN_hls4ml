@@ -36,6 +36,7 @@ class plot_information:
         plt.subplots_adjust(wspace=0.3)
         plt.savefig("img/NtracksAndHits.pdf")
         plt.show()
+        print(f'mean number of particles: {np.mean(particles)}, mean number of hits: {np.mean(hits)}')
         
     def plot_graph_information(self):
         plt.style.use("kit_hist")
@@ -104,12 +105,13 @@ class plot_information:
         plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
         plt.savefig(save_name, bbox_inches='tight')
         plt.show() 
+        print(f'best cut: {max(efficiency + purity)}')
         
         
 
 class plot_event:
     
-    def __init__(self, event=None, graph=None, scale=1.4, shift=0.16):
+    def __init__(self, event=None, graph=None, scale=1.4, shift=0.13):
         self.event = event
         self.graph = graph
         self.scale = scale

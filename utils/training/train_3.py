@@ -70,7 +70,7 @@ class train_model:
                 losses.append(val_loss.item())
 
         val_loss /= len(self.val_loader.dataset)
-        print('\nTest set: Average loss: {:.4f}\n, Accuracy: {:.4f}\n'
+        print('\n Validation set: Average loss: {:.4f}\n, Accuracy: {:.4f}\n'
               .format(val_loss, val_acc.compute()))
         return np.nanmean(losses), val_acc.compute()
 

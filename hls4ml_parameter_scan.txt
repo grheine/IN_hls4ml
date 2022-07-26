@@ -1,0 +1,1856 @@
+===============================================================
+Parameter Scans for hls4ml conversion
+===============================================================
+
+
+====================================================== 
+scan for reuse in range [ 1 2 3 4 5 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 53s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 600 
+FF: 18543 
+LUT: 34106 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 23.81% of 2520 
+FF: 3.38% of 548160 
+LUT: 12.44% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 20.49% of 2928 
+FF: 3.11% of 597120 
+LUT: 11.42% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 30.49% of 1968 
+FF: ? 
+LUT: 3.79% of 899840 
+
+====================================================== 
+scan for reuse in range [ 1 2 3 4 5 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 2} 
+compilation time: 0min 49s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 360 
+FF: 12955 
+LUT: 24185 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 14.29% of 2520 
+FF: 2.36% of 548160 
+LUT: 8.82% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 12.30% of 2928 
+FF: 2.17% of 597120 
+LUT: 8.10% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 18.29% of 1968 
+FF: ? 
+LUT: 2.69% of 899840 
+
+====================================================== 
+scan for reuse in range [ 1 2 3 4 5 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 3} 
+compilation time: 0min 47s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 240 
+FF: 11308 
+LUT: 19185 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 9.52% of 2520 
+FF: 2.06% of 548160 
+LUT: 7.00% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 8.20% of 2928 
+FF: 1.89% of 597120 
+LUT: 6.43% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 12.20% of 1968 
+FF: ? 
+LUT: 2.13% of 899840 
+
+====================================================== 
+scan for reuse in range [ 1 2 3 4 5 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 4} 
+compilation time: 0min 46s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 240 
+FF: 11259 
+LUT: 19218 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 9.52% of 2520 
+FF: 2.05% of 548160 
+LUT: 7.01% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 8.20% of 2928 
+FF: 1.89% of 597120 
+LUT: 6.44% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 12.20% of 1968 
+FF: ? 
+LUT: 2.14% of 899840 
+
+====================================================== 
+scan for reuse in range [ 1 2 3 4 5 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 5} 
+compilation time: 0min 44s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 120 
+FF: 9109 
+LUT: 14012 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 4.76% of 2520 
+FF: 1.66% of 548160 
+LUT: 5.11% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 4.10% of 2928 
+FF: 1.53% of 597120 
+LUT: 4.69% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 6.10% of 1968 
+FF: ? 
+LUT: 1.56% of 899840 
+
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<8,4>', 'reuse': 1} 
+compilation time: 0min 52s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 12 
+DSP48E: 0 
+FF: 7442 
+LUT: 38835 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.66% of 1824 
+DSP48E: 0.00% of 2520 
+FF: 1.36% of 548160 
+LUT: 14.17% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 0.00% of 2928 
+FF: 1.25% of 597120 
+LUT: 13.01% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 0.00% of 1968 
+FF: ? 
+LUT: 4.32% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<10,5>', 'reuse': 1} 
+compilation time: 0min 55s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 13 
+DSP48E: 0 
+FF: 10670 
+LUT: 53044 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.71% of 1824 
+DSP48E: 0.00% of 2520 
+FF: 1.95% of 548160 
+LUT: 19.35% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 0.00% of 2928 
+FF: 1.79% of 597120 
+LUT: 17.77% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 0.00% of 1968 
+FF: ? 
+LUT: 5.89% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<12,6>', 'reuse': 1} 
+compilation time: 0min 54s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 13 
+DSP48E: 345 
+FF: 13947 
+LUT: 37521 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.71% of 1824 
+DSP48E: 13.69% of 2520 
+FF: 2.54% of 548160 
+LUT: 13.69% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 11.78% of 2928 
+FF: 2.34% of 597120 
+LUT: 12.57% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 17.53% of 1968 
+FF: ? 
+LUT: 4.17% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<14,7>', 'reuse': 1} 
+compilation time: 0min 53s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 14 
+DSP48E: 480 
+FF: 16082 
+LUT: 36197 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.77% of 1824 
+DSP48E: 19.05% of 2520 
+FF: 2.93% of 548160 
+LUT: 13.21% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 16.39% of 2928 
+FF: 2.69% of 597120 
+LUT: 12.12% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 24.39% of 1968 
+FF: ? 
+LUT: 4.02% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 50s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 600 
+FF: 18543 
+LUT: 34106 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 23.81% of 2520 
+FF: 3.38% of 548160 
+LUT: 12.44% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 20.49% of 2928 
+FF: 3.11% of 597120 
+LUT: 11.42% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 30.49% of 1968 
+FF: ? 
+LUT: 3.79% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<18,9>', 'reuse': 1} 
+compilation time: 0min 53s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 16 
+DSP48E: 690 
+FF: 20446 
+LUT: 35852 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.88% of 1824 
+DSP48E: 27.38% of 2520 
+FF: 3.73% of 548160 
+LUT: 13.08% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 23.57% of 2928 
+FF: 3.42% of 597120 
+LUT: 12.01% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 35.06% of 1968 
+FF: ? 
+LUT: 3.98% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<20,10>', 'reuse': 1} 
+compilation time: 0min 52s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 17 
+DSP48E: 750 
+FF: 22935 
+LUT: 36612 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.93% of 1824 
+DSP48E: 29.76% of 2520 
+FF: 4.18% of 548160 
+LUT: 13.36% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 25.61% of 2928 
+FF: 3.84% of 597120 
+LUT: 12.26% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 38.11% of 1968 
+FF: ? 
+LUT: 4.07% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<22,11>', 'reuse': 1} 
+compilation time: 0min 52s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 18 
+DSP48E: 805 
+FF: 25289 
+LUT: 36903 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.99% of 1824 
+DSP48E: 31.94% of 2520 
+FF: 4.61% of 548160 
+LUT: 13.46% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 27.49% of 2928 
+FF: 4.24% of 597120 
+LUT: 12.36% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 40.90% of 1968 
+FF: ? 
+LUT: 4.10% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<24,12>', 'reuse': 1} 
+compilation time: 0min 51s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 18 
+DSP48E: 815 
+FF: 27088 
+LUT: 39117 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.99% of 1824 
+DSP48E: 32.34% of 2520 
+FF: 4.94% of 548160 
+LUT: 14.27% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 27.83% of 2928 
+FF: 4.54% of 597120 
+LUT: 13.10% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 41.41% of 1968 
+FF: ? 
+LUT: 4.35% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<26,13>', 'reuse': 1} 
+compilation time: 0min 52s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 19 
+DSP48E: 825 
+FF: 30237 
+LUT: 41431 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.04% of 1824 
+DSP48E: 32.74% of 2520 
+FF: 5.52% of 548160 
+LUT: 15.12% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 28.18% of 2928 
+FF: 5.06% of 597120 
+LUT: 13.88% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 41.92% of 1968 
+FF: ? 
+LUT: 4.60% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<28,14>', 'reuse': 1} 
+compilation time: 0min 51s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 20 
+DSP48E: 855 
+FF: 33137 
+LUT: 43735 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.10% of 1824 
+DSP48E: 33.93% of 2520 
+FF: 6.05% of 548160 
+LUT: 15.96% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 29.20% of 2928 
+FF: 5.55% of 597120 
+LUT: 14.65% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 43.45% of 1968 
+FF: ? 
+LUT: 4.86% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<30,15>', 'reuse': 1} 
+compilation time: 1min 1s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 21 
+DSP48E: 1700 
+FF: 38331 
+LUT: 71214 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.15% of 1824 
+DSP48E: 67.46% of 2520 
+FF: 6.99% of 548160 
+LUT: 25.98% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 58.06% of 2928 
+FF: 6.42% of 597120 
+LUT: 23.85% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 86.38% of 1968 
+FF: ? 
+LUT: 7.91% of 899840 
+
+====================================================== 
+scan for precision in range [ 8 10 12 14 16 18 20 22 24 26 28 30 32 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<32,16>', 'reuse': 1} 
+compilation time: 0min 55s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 22 
+DSP48E: 1710 
+FF: 46350 
+LUT: 65496 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.21% of 1824 
+DSP48E: 67.86% of 2520 
+FF: 8.46% of 548160 
+LUT: 23.90% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 58.40% of 2928 
+FF: 7.76% of 597120 
+LUT: 21.94% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 86.89% of 1968 
+FF: ? 
+LUT: 7.28% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 1, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 38s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 105 
+FF: 10087 
+LUT: 14271 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 4.17% of 2520 
+FF: 1.84% of 548160 
+LUT: 5.21% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 3.59% of 2928 
+FF: 1.69% of 597120 
+LUT: 4.78% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 5.34% of 1968 
+FF: ? 
+LUT: 1.59% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 2, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 41s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 295 
+FF: 12389 
+LUT: 18466 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 11.71% of 2520 
+FF: 2.26% of 548160 
+LUT: 6.74% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 10.08% of 2928 
+FF: 2.07% of 597120 
+LUT: 6.19% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 14.99% of 1968 
+FF: ? 
+LUT: 2.05% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 3, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 45s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 420 
+FF: 15433 
+LUT: 26761 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 16.67% of 2520 
+FF: 2.82% of 548160 
+LUT: 9.76% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 14.34% of 2928 
+FF: 2.58% of 597120 
+LUT: 8.96% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 21.34% of 1968 
+FF: ? 
+LUT: 2.97% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 50s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 600 
+FF: 18543 
+LUT: 34106 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 23.81% of 2520 
+FF: 3.38% of 548160 
+LUT: 12.44% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 20.49% of 2928 
+FF: 3.11% of 597120 
+LUT: 11.42% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 30.49% of 1968 
+FF: ? 
+LUT: 3.79% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 5, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 55s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 860 
+FF: 22468 
+LUT: 40776 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 34.13% of 2520 
+FF: 4.10% of 548160 
+LUT: 14.88% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 29.37% of 2928 
+FF: 3.76% of 597120 
+LUT: 13.66% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 43.70% of 1968 
+FF: ? 
+LUT: 4.53% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 6, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 2s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 1075 
+FF: 26653 
+LUT: 52011 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 42.66% of 2520 
+FF: 4.86% of 548160 
+LUT: 18.98% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 36.71% of 2928 
+FF: 4.46% of 597120 
+LUT: 17.42% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 54.62% of 1968 
+FF: ? 
+LUT: 5.78% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 7, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 8s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 1245 
+FF: 32373 
+LUT: 64186 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 49.40% of 2520 
+FF: 5.91% of 548160 
+LUT: 23.42% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 42.52% of 2928 
+FF: 5.42% of 597120 
+LUT: 21.50% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 63.26% of 1968 
+FF: ? 
+LUT: 7.13% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 8, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 13s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 1635 
+FF: 37925 
+LUT: 72311 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 64.88% of 2520 
+FF: 6.92% of 548160 
+LUT: 26.38% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 55.84% of 2928 
+FF: 6.35% of 597120 
+LUT: 24.22% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 83.08% of 1968 
+FF: ? 
+LUT: 8.04% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 9, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 23s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 1770 
+FF: 40535 
+LUT: 88191 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 70.24% of 2520 
+FF: 7.39% of 548160 
+LUT: 32.18% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 60.45% of 2928 
+FF: 6.79% of 597120 
+LUT: 29.54% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 89.94% of 1968 
+FF: ? 
+LUT: 9.80% of 899840 
+
+====================================================== 
+scan for n_neurons in range [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 10, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 34s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 1940 
+FF: 45080 
+LUT: 104016 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 76.98% of 2520 
+FF: 8.22% of 548160 
+LUT: 37.95% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 66.26% of 2928 
+FF: 7.55% of 597120 
+LUT: 34.84% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 98.58% of 1968 
+FF: ? 
+LUT: 11.56% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 50s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 600 
+FF: 18543 
+LUT: 34106 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 23.81% of 2520 
+FF: 3.38% of 548160 
+LUT: 12.44% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 20.49% of 2928 
+FF: 3.11% of 597120 
+LUT: 11.42% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 30.49% of 1968 
+FF: ? 
+LUT: 3.79% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 10, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 4s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 21 
+DSP48E: 1085 
+FF: 32618 
+LUT: 59743 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.15% of 1824 
+DSP48E: 43.06% of 2520 
+FF: 5.95% of 548160 
+LUT: 21.80% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 37.06% of 2928 
+FF: 5.46% of 597120 
+LUT: 20.01% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 55.13% of 1968 
+FF: ? 
+LUT: 6.64% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 15, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 19s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 29 
+DSP48E: 1570 
+FF: 47196 
+LUT: 85508 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.59% of 1824 
+DSP48E: 62.30% of 2520 
+FF: 8.61% of 548160 
+LUT: 31.20% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 53.62% of 2928 
+FF: 7.90% of 597120 
+LUT: 28.64% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 79.78% of 1968 
+FF: ? 
+LUT: 9.50% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 20, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 37s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 35 
+DSP48E: 2055 
+FF: 61454 
+LUT: 111273 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.92% of 1824 
+DSP48E: 81.55% of 2520 
+FF: 11.21% of 548160 
+LUT: 40.60% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 70.18% of 2928 
+FF: 10.29% of 597120 
+LUT: 37.27% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 104.42% of 1968 
+FF: ? 
+LUT: 12.37% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 25, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 55s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 43 
+DSP48E: 2540 
+FF: 76032 
+LUT: 137038 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 2.36% of 1824 
+DSP48E: 100.79% of 2520 
+FF: 13.87% of 548160 
+LUT: 50.00% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 86.75% of 2928 
+FF: 12.73% of 597120 
+LUT: 45.90% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 129.07% of 1968 
+FF: ? 
+LUT: 15.23% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 30, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 2min 15s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 49 
+DSP48E: 3025 
+FF: 90289 
+LUT: 162803 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 2.69% of 1824 
+DSP48E: 120.04% of 2520 
+FF: 16.47% of 548160 
+LUT: 59.40% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 103.31% of 2928 
+FF: 15.12% of 597120 
+LUT: 54.53% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 153.71% of 1968 
+FF: ? 
+LUT: 18.09% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 0min 50s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 15 
+DSP48E: 600 
+FF: 18543 
+LUT: 34106 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 0.82% of 1824 
+DSP48E: 23.81% of 2520 
+FF: 3.38% of 548160 
+LUT: 12.44% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 20.49% of 2928 
+FF: 3.11% of 597120 
+LUT: 11.42% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 30.49% of 1968 
+FF: ? 
+LUT: 3.79% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 10, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 1s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 22 
+DSP48E: 715 
+FF: 25997 
+LUT: 56630 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.21% of 1824 
+DSP48E: 28.37% of 2520 
+FF: 4.74% of 548160 
+LUT: 20.66% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 24.42% of 2928 
+FF: 4.35% of 597120 
+LUT: 18.97% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 36.33% of 1968 
+FF: ? 
+LUT: 6.29% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 15, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 1s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 28 
+DSP48E: 830 
+FF: 32390 
+LUT: 56706 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.54% of 1824 
+DSP48E: 32.94% of 2520 
+FF: 5.91% of 548160 
+LUT: 20.69% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 28.35% of 2928 
+FF: 5.42% of 597120 
+LUT: 18.99% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 42.17% of 1968 
+FF: ? 
+LUT: 6.30% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 20, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 16s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 35 
+DSP48E: 945 
+FF: 37488 
+LUT: 72406 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 1.92% of 1824 
+DSP48E: 37.50% of 2520 
+FF: 6.84% of 548160 
+LUT: 26.42% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 32.27% of 2928 
+FF: 6.28% of 597120 
+LUT: 24.25% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 48.02% of 1968 
+FF: ? 
+LUT: 8.05% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 25, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 33s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 42 
+DSP48E: 1060 
+FF: 43718 
+LUT: 85286 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 2.30% of 1824 
+DSP48E: 42.06% of 2520 
+FF: 7.98% of 548160 
+LUT: 31.12% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 36.20% of 2928 
+FF: 7.32% of 597120 
+LUT: 28.57% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 53.86% of 1968 
+FF: ? 
+LUT: 9.48% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 5 10 15 20 25 30 ]  
+====================================================== 
+{'n_nodes': 30, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 1min 57s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 48 
+DSP48E: 1175 
+FF: 49948 
+LUT: 97846 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 2.63% of 1824 
+DSP48E: 46.63% of 2520 
+FF: 9.11% of 548160 
+LUT: 35.70% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 40.13% of 2928 
+FF: 8.36% of 597120 
+LUT: 32.77% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 59.71% of 1968 
+FF: ? 
+LUT: 10.87% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 35, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 2min 47s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 57 
+DSP48E: 3510 
+FF: 99268 
+LUT: 187496 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 3.12% of 1824 
+DSP48E: 139.29% of 2520 
+FF: 18.11% of 548160 
+LUT: 68.41% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 119.88% of 2928 
+FF: 16.62% of 597120 
+LUT: 62.80% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 178.35% of 1968 
+FF: ? 
+LUT: 20.84% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 40, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 3min 12s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 63 
+DSP48E: 3995 
+FF: 112565 
+LUT: 214941 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 3.45% of 1824 
+DSP48E: 158.53% of 2520 
+FF: 20.54% of 548160 
+LUT: 78.42% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 136.44% of 2928 
+FF: 18.85% of 597120 
+LUT: 71.99% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 203.00% of 1968 
+FF: ? 
+LUT: 23.89% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 45, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 3min 40s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 70 
+DSP48E: 4480 
+FF: 126183 
+LUT: 240706 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 3.84% of 1824 
+DSP48E: 177.78% of 2520 
+FF: 23.02% of 548160 
+LUT: 87.82% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 153.01% of 2928 
+FF: 21.13% of 597120 
+LUT: 80.62% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 227.64% of 1968 
+FF: ? 
+LUT: 26.75% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 50, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 4min 21s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 77 
+DSP48E: 4965 
+FF: 139480 
+LUT: 266471 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 4.22% of 1824 
+DSP48E: 197.02% of 2520 
+FF: 25.45% of 548160 
+LUT: 97.22% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 169.57% of 2928 
+FF: 23.36% of 597120 
+LUT: 89.25% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 252.29% of 1968 
+FF: ? 
+LUT: 29.61% of 899840 
+
+====================================================== 
+scan for n_edges in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 5, 'n_edges': 55, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 4min 56s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 84 
+DSP48E: 5450 
+FF: 153098 
+LUT: 292236 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 4.61% of 1824 
+DSP48E: 216.27% of 2520 
+FF: 27.93% of 548160 
+LUT: 106.62% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 186.13% of 2928 
+FF: 25.64% of 597120 
+LUT: 97.88% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 276.93% of 1968 
+FF: ? 
+LUT: 32.48% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 35, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 2min 35s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 55 
+DSP48E: 1290 
+FF: 56182 
+LUT: 110486 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 3.02% of 1824 
+DSP48E: 51.19% of 2520 
+FF: 10.25% of 548160 
+LUT: 40.31% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 44.06% of 2928 
+FF: 9.41% of 597120 
+LUT: 37.01% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 65.55% of 1968 
+FF: ? 
+LUT: 12.28% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 40, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 3min 22s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 62 
+DSP48E: 1405 
+FF: 62412 
+LUT: 122966 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 3.40% of 1824 
+DSP48E: 55.75% of 2520 
+FF: 11.39% of 548160 
+LUT: 44.87% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 47.98% of 2928 
+FF: 10.45% of 597120 
+LUT: 41.19% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 71.39% of 1968 
+FF: ? 
+LUT: 13.67% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 45, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 4min 22s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 73 
+DSP48E: 1520 
+FF: 79705 
+LUT: 139405 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 4.00% of 1824 
+DSP48E: 60.32% of 2520 
+FF: 14.54% of 548160 
+LUT: 50.86% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 51.91% of 2928 
+FF: 13.35% of 597120 
+LUT: 46.69% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 77.24% of 1968 
+FF: ? 
+LUT: 15.49% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 50, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 5min 48s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 75 
+DSP48E: 1635 
+FF: 82478 
+LUT: 149288 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 4.11% of 1824 
+DSP48E: 64.88% of 2520 
+FF: 15.05% of 548160 
+LUT: 54.47% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 55.84% of 2928 
+FF: 13.81% of 597120 
+LUT: 50.00% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 83.08% of 1968 
+FF: ? 
+LUT: 16.59% of 899840 
+
+====================================================== 
+scan for n_nodes in range [ 35 40 45 50 55 ]  
+====================================================== 
+{'n_nodes': 55, 'n_edges': 5, 'node_dim': 3, 'edge_dim': 3, 'n_neurons': 4, 'precision': 'ap_fixed<16,8>', 'reuse': 1} 
+compilation time: 7min 23s 
+===================== 
+Total utilization:  
+=====================  
+BRAM_18K: 82 
+DSP48E: 1750 
+FF: 90467 
+LUT: 161693 
+
+===================== 
+ZCU102 utilization: 
+===================== 
+BRAM_18K: 4.50% of 1824 
+DSP48E: 69.44% of 2520 
+FF: 16.50% of 548160 
+LUT: 58.99% of 274080 
+
+===================== 
+Highflex utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 59.77% of 2928 
+FF: 15.15% of 597120 
+LUT: 54.16% of 298560 
+
+===================== 
+Versal utilization: 
+===================== 
+BRAM_18K: ? 
+DSP48E: 88.92% of 1968 
+FF: ? 
+LUT: 17.97% of 899840 
+
