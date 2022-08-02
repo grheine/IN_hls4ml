@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch_geometric.transforms as T
 from torch_geometric.nn import MessagePassing
-from torch.nn import Sequential as Seq, Linear, ReLU, Sigmoid
+from torch.nn import Sequential as Seq, Linear, ReLU, Sigmoid, Hardsigmoid
 
 from prettytable import PrettyTable
 
@@ -53,6 +53,7 @@ class InteractionNetwork(MessagePassing):
         self.O = ObjectModel(6, 3, hidden_size)
         self.R2 = RelationalModel(9, 1, hidden_size)
         self.E: Tensor = Tensor()
+        self.final_activation = nn.Hardsigmoid()
 
     def forward(self, data: Tensor) -> Tensor:
         x = data.x
@@ -62,7 +63,7 @@ class InteractionNetwork(MessagePassing):
         m2 = torch.cat([x_tilde[edge_index[1]],
                         x_tilde[edge_index[0]],
                         self.E], dim=1)
-        return torch.sigmoid(self.R2(m2))
+        return self.final_activation(self.R2(m2))
 
     def message(self, x_i, x_j, edge_attr):
         # x_i --> incoming

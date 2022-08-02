@@ -69,8 +69,11 @@ class build_graphs:
         return hits.set_index('event_id')
     
 
-    def create_graph_list(self, show_progress=True, dtype=object):
+    def create_graph_list(self, minlayer=0, maxlayer=24, show_progress=True, dtype=object):
         evs = self.events
+        evs = evs[(evs['layer']>=minlayer ) & (evs['layer']<=maxlayer)]
+        self.events = evs
+        
         feature_scale = np.array([20., 100., 0.1, 0.1])
         hits = evs[['x','z', 'theta', 'iso']]/feature_scale
 
@@ -125,6 +128,5 @@ class build_graphs:
             graphs.append(G)
         
         return graphs
-    
    
 

@@ -32,7 +32,7 @@ from utils.hls4ml.load_torch import load_graphs, load_models
 def parse_args():
     parser = argparse.ArgumentParser()
     add_arg = parser.add_argument
-    add_arg('--part', type=str, default='xczu9eg-ffvb1156-2-e', help='for which fpga board to compile')
+    add_arg('--part', type=str, default='xczu11eg-ffvc1760-2-e', help='for which fpga board to compile')
     add_arg('--synth',action='store_true', help='whether to synthesize')
     args = parser.parse_args()
     return args
@@ -55,7 +55,7 @@ def main():
     graph_indir='data/graphs'
     n_neurons = config['n_neurons']
     trained_model_dir = f'models/optimization/best/best_model_hidden_dim_{n_neurons}.pt'
-    output_dir = f'hls_output/par_scans/{key}_{par}'
+    output_dir = f'hls_output/par_scans_HF/{key}_{par}'
     
     
     graph_dims = {
@@ -127,11 +127,11 @@ def main():
 if __name__=="__main__":
 
     scans = {
-        # 'reuse': np.arange(1,6), 
+        # 'reuse': np.arange(1,20), 
         # 'precision': np.arange(8,34,2), 
         # 'n_neurons': np.arange(1,10),
-        # 'n_edges': np.arange(35,60,5),
-        'n_nodes': np.arange(5,60,5)
+        # 'n_edges': np.arange(5,20,5),
+        'n_nodes': np.arange(5,35,5)
     }
 
 
@@ -142,13 +142,13 @@ if __name__=="__main__":
             'n_edges': 5,
             'node_dim': 3,
             'edge_dim': 3,
-            'n_neurons': 4,
+            'n_neurons': 6,
             'precision': 'ap_fixed<16,8>', 
             'reuse' : 1 
         }
 
         # for par in value:
-        #     f = open(f'hls4ml_parameter_scan.txt', 'a')
+        #     f = open(f'hls4ml_parameter_scan_HF.txt', 'a')
         #     if key == 'precision':
         #         par = f'ap_fixed<{par},{int(par/2)}>'
         #     print(par)
@@ -161,15 +161,13 @@ if __name__=="__main__":
         #     f.close()
 
         for par in value:
-            f = open(f'hls4ml_parameter_scan.txt', 'a')
-            if key == 'precision':
-                par = f'ap_fixed<{par},{int(par/2)}>'
+            f = open(f'hls4ml_parameter_scan_HF.txt', 'a')
             print(par)
             config[key] = par
-            config['n_edges'] = config['n_nodes']
+            config['n_edges'] = 2*config['n_nodes']
             t0 = time()
             f.write('====================================================== \n')
-            f.write(f'scan for n_nodes&n_edges in range {value} \n')
+            f.write(f'scan for n_nodes&2n_edges in range {value} \n')
             f.write('====================================================== \n' )
             main()
             f.close()
