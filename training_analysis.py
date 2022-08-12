@@ -84,11 +84,12 @@ def objective(trial):
     lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
     gamma = trial.suggest_float('gamma', 0.5, 1.)
     lr_step_size = trial.suggest_int('step_size', 1, 10)
-    batch_size = trial.suggest_int('batch_size', 1,32, log=True)
-    print(lr, gamma, lr_step_size, batch_size)
+    batch_size = 1
+    patience = 5
+    print(lr, gamma, lr_step_size)
 
     parts = [0.8, 0.1, 0.1] #sizes of training, validation and testing samples
-    load_params = {'batch_size': batch_size, 'shuffle': True, 'num_workers': 18}
+    load_params = {'batch_size': batch_size, 'shuffle': True, 'num_workers': 14}
     parts = np.cumsum((nevents*np.array(parts)).astype(int))
     partition = {'train': graphs[:parts[0]],  
                     'test':  graphs[parts[0]:parts[1]],
@@ -104,10 +105,10 @@ def objective(trial):
     optimizer = optim.Adam(model.parameters(), lr=lr)
     scheduler = StepLR(optimizer, step_size=lr_step_size, gamma=gamma)
 
-    name = f'IN_{nevents}_{hidden_dim}_{lr}_{gamma}_{lr_step_size}_{batch_size}'
+    name = f'IN_{nevents}_{hidden_dim}_{lr}_{gamma}_{lr_step_size}'
 
     # initialize the early_stopping object
-    early_stopping = EarlyStopping(patience=4, verbose=True)
+    early_stopping = EarlyStopping(patience=patience, verbose=True)
 
     losses, accs = [], []
     val_losses, val_accs = [], []
@@ -144,8 +145,8 @@ def objective(trial):
     #save model
     trained_model = copy.deepcopy(model)
 
-    torch.save(model.state_dict(), f"models/optimization/{name}_state_dict.pt")
-    torch.save(model, f'models/optimization/{name}.pt')
+    torch.save(model.state_dict(), f"models/optimization2/{name}_state_dict.pt")
+    torch.save(model, f'models/optimization2/{name}.pt')
     
 
     return np.min(val_losses)
@@ -154,56 +155,61 @@ def objective(trial):
 
 if __name__ == "__main__":
 
-    for hidden_dim in [3,4,5,6,7,8,9]:
-        nevents = 1000
-        device = torch.device('cpu')
-        epochs = 15
-        iterations = 3
-        n_trials = 50
-        graphs = load_graphs('data/graphs', nevents, 3, 3)
-
-
-        study = optuna.create_study(direction="minimize")
-        study.optimize(objective, n_trials=n_trials, catch=(ValueError,))
-
-        pruned_trials = [t for t in study.trials if t.state ==
-                        optuna.trial.TrialState.PRUNED]
-        complete_trials = [t for t in study.trials if t.state ==
-                        optuna.trial.TrialState.COMPLETE]
-
-        print("Study statistics: ")
-        print("  Number of finished trials: ", len(study.trials))
-        print("  Number of pruned trials: ", len(pruned_trials))
-        print("  Number of complete trials: ", len(complete_trials))
-
-        print("Best trial:")
-        trial = study.best_trial
-        best_model = f'IN_{nevents}_{hidden_dim}'
-
-        print("  Value: ", trial.value)
-
-        print("  Params: ")
-        for key, value in trial.params.items():
-            print("    {}: {}".format(key, value))
-            best_model += '_' + str(value)
-
-        best_model_dict = best_model + '_state_dict.pt'
-        best_model += '.pt'
-
-        shutil.copy2(f'models/optimization/{best_model}', f'models/optimization/best/best_model_hidden_dim_{hidden_dim}.pt')
-        shutil.copy2(f'models/optimization/{best_model_dict}', f'models/optimization/best/best_model_dict_hidden_dim_{hidden_dim}.pt')        
-
-
-        f = open(f'optimization_params.txt', 'a')
-        f.write(f'\n ---trial for hidden_dim: {hidden_dim} at {nevents} events, {epochs} epochs, {iterations} iterations, {n_trials} trials --- \n')
-        f.write('best loss: ' + str(trial.value) + '\n')
-        for key, value in trial.params.items():
-            f.write(key)
-            f.write(': ')
-            f.write(f'{value}')
-            f.write('\n')
-        f.write(f'model saved under /models/best/best_model_hidden_dim_{hidden_dim}.pt \n \n')
+    for nevents in [100, 200, 400, 500, 600, 800, 1000, 2000, 3000]:
+         
+        f = open(f'optimization_params2.txt', 'a')
+        f.write(f'\n=====================================================================================================================\n {nevents} events, different hidden dimensions \n =====================================================================================================================\n \n')
         f.close()
+        for hidden_dim in [3,4,5,6,7,8,9]:
+            nevents = nevents
+            device = torch.device('cpu')
+            epochs = 50
+            iterations = 3
+            n_trials = 20
+            graphs = load_graphs('data/graphs', nevents, 3, 3)
+
+
+            study = optuna.create_study(direction="minimize")
+            study.optimize(objective, n_trials=n_trials, catch=(ValueError,))
+
+            pruned_trials = [t for t in study.trials if t.state ==
+                            optuna.trial.TrialState.PRUNED]
+            complete_trials = [t for t in study.trials if t.state ==
+                            optuna.trial.TrialState.COMPLETE]
+
+            print("Study statistics: ")
+            print("  Number of finished trials: ", len(study.trials))
+            print("  Number of pruned trials: ", len(pruned_trials))
+            print("  Number of complete trials: ", len(complete_trials))
+
+            print("Best trial:")
+            trial = study.best_trial
+            best_model = f'IN_{nevents}_{hidden_dim}'
+
+            print("  Value: ", trial.value)
+
+            print("  Params: ")
+            for key, value in trial.params.items():
+                print("    {}: {}".format(key, value))
+                best_model += '_' + str(value)
+
+            best_model_dict = best_model + '_state_dict.pt'
+            best_model += '.pt'
+
+            shutil.copy2(f'models/optimization2/{best_model}', f'models/optimization2/best/best_model_hidden_dim_{hidden_dim}.pt')
+            shutil.copy2(f'models/optimization2/{best_model_dict}', f'models/optimization2/best/best_model_dict_hidden_dim_{hidden_dim}.pt')        
+
+
+            f = open(f'optimization_params2.txt', 'a')
+            f.write(f'\n ---trial for hidden_dim: {hidden_dim} at {nevents} events, {epochs} epochs, {iterations} iterations, {n_trials} trials --- \n')
+            f.write('best loss: ' + str(trial.value) + '\n')
+            for key, value in trial.params.items():
+                f.write(key)
+                f.write(': ')
+                f.write(f'{value}')
+                f.write('\n')
+            f.write(f'model saved under /models/optimization2/best/best_model_hidden_dim_{hidden_dim}.pt \n \n')
+            f.close()
 
 
 

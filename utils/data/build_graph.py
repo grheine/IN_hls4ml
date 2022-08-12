@@ -22,7 +22,7 @@ from collections import namedtuple
 
 class build_graphs:
     
-    def __init__(self, events, start=0, end=None, shuffle=True,  pz_min=0.1, remove_duplicates=True, slope=2.):
+    def __init__(self, events, start=0, end=None, shuffle=True,  pz_min=0.003, remove_duplicates=True, slope=0.6):
         self.raw = events
         self.start = start
         self.end = end
@@ -42,36 +42,49 @@ class build_graphs:
         inverse_layer_mapping = {(i+1):x for i,x in enumerate(layerids)} # map index i to vertical layers
         layer_mapping = {v: k for k, v in inverse_layer_mapping.items()} # invert mapping
         hits['layer'].replace(layer_mapping, inplace=True)
-        return hits        
+        return hits
+    
+    def shuffle_hitIDs(self, hits):
+        hits = hits.sample(frac=1, random_state=42).reset_index(drop=True)
+        hits = hits.assign(Hit_id=hits.hit_id).drop('hit_id', axis=1)
+        hits.index.name = 'hit_id'
+        hits = hits.reset_index('hit_id')
+        return hits
+    
+    def pz_cut(self, hits):
+        curler = hits.groupby(['event_id', 'particle_id']).pz.mean().rename('curler') < self.pz_min
+        hits.set_index(['particle_id'], inplace = True, append = True)
+        ev = hits.merge(curler, left_index=True, right_on=['event_id', 'particle_id'])
+        nocurler = ev[ev.curler==False].drop(columns=['curler'])
+        return nocurler.reset_index(['event_id', 'particle_id'])
     
     def preprocess(self):
-        hits = self.raw.loc[self.start:self.end].reset_index('event_id')
-        # Shuffle node indices
-        if self.shuffle:
-            hits = hits.sample(frac=1, random_state=42).reset_index(drop=True)
-            hits = hits.assign(Hit_id=hits.hit_id).drop('hit_id', axis=1)
-            hits.index.name = 'hit_id'
-            hits = hits.reset_index('hit_id')
-
+        hits = self.raw.loc[self.start:self.end]
+     
         hits = self.remove_skewed_layers(hits)
         hits = self.layer_mapping(hits)
 
         # apply pz cut, removes all noise hits
-        hits = hits[hits['pz'] > self.pz_min]
-
-        # add radius and theta
-        hits = hits.assign(r=np.sqrt(hits.x**2 + hits.z**2))
-        hits = hits.assign(theta=np.arctan2(hits.x, hits.z))
+        hits = self.pz_cut(hits)     
+        
+        # Shuffle node indices
+        if self.shuffle: hits = self.shuffle_hitIDs(hits)
         
         # Remove duplicate hits
         if self.remove_duplicates:
             hits = hits.drop_duplicates(subset=('event_id', 'particle_id', 'layer'))
+            
         return hits.set_index('event_id')
     
 
-    def create_graph_list(self, minlayer=0, maxlayer=24, show_progress=True, dtype=object):
+    def create_graph_list(self,node_dim, edge_dim, minlayer=0, maxlayer=24, show_progress=True, dtype=object):
         evs = self.events
         evs = evs[(evs['layer']>=minlayer ) & (evs['layer']<=maxlayer)]
+        
+        # add radius and theta
+        evs = evs.assign(r=np.sqrt(evs.x**2 + evs.z**2))
+        evs = evs.assign(theta=np.arctan2(evs.x, evs.z))
+        
         self.events = evs
         
         feature_scale = np.array([20., 100., 0.1, 0.1])
@@ -124,7 +137,7 @@ class build_graphs:
             edge_index = np.array(np.vstack(segments).T)
             y = np.array(y, dtype=np.int8)
             pid = df.particle_id
-            G = Graph(X, edge_attr, edge_index, y, pid)
+            G = Graph(X[:,:node_dim], edge_attr[:edge_dim,:], edge_index, y, pid)
             graphs.append(G)
         
         return graphs

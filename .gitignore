@@ -1,4 +1,15 @@
 .ipynb_checkpoints/
 data/raw.h5 data/raw.h5~a204d18... updated gitignore
 data/graphs
+data/3_segments*
+data/./
 img/
+models/
+*abdel*
+*.txt
+vivado*
+playground*
+.*
+hls_output*
+*__pycache__*
+hls4ml_test.py

@@ -58,19 +58,19 @@ def load_graphs(graph_indir, out_dir, graph_dims, n_graphs):
     print(f'{edges_kept/n_graphs:.1%} of graphs without truncation of edges')
  
 
-    print("writing test bench data for 1st graph")
+    print(f"writing test bench data for 1st graph to {out_dir}/tb_data/input_data.dat")
     data = graphs[0]
     node_attr, edge_attr, edge_index = data.x.detach().cpu().numpy(), data.edge_attr.detach().cpu().numpy(), data.edge_index.transpose(
         0, 1).detach().cpu().numpy().astype(np.int32)
-    os.makedirs('tb_data', exist_ok=True)
+    os.makedirs(f'{out_dir}/tb_data', exist_ok=True)
     input_data = np.concatenate([node_attr.reshape(1, -1), edge_attr.reshape(1, -1), edge_index.reshape(1, -1)], axis=1)
-    np.savetxt('tb_data/input_data.dat', input_data, fmt='%f', delimiter=' ')
+    np.savetxt(f'{out_dir}/tb_data/input_data.dat', input_data, fmt='%f', delimiter=' ')
 
     return graphs
 
 
 
-def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_dims, hls_only=True):
+def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_dims, hls_only=True, strategy='latency'):
     
     if 'dict' in model_dir:
         torch_model = InteractionNetwork(hidden_size=n_neurons)
@@ -91,7 +91,8 @@ def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_
     config = config_from_pyg_model(torch_model,
                                    default_precision=precision,
                                    default_index_precision='ap_uint<16>', 
-                                   default_reuse_factor=reuse)
+                                   default_reuse_factor=reuse,
+                                   default_strategy=strategy)
     hls_model = convert_from_pyg_model(torch_model,
                                        forward_dictionary=forward_dict,
                                        **graph_dims,

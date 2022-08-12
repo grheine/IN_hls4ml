@@ -6,8 +6,7 @@ from utils.data.graphdata import GraphDataset
 
 def load_graphs(graph_indir, n_graphs, node_dim, edge_dim):
     Graph = namedtuple('Graph', ['x', 'edge_attr', 'edge_index', 'y', 'pid'])
-    graph_files = np.array(os.listdir(graph_indir))
-    graph_files = np.array([os.path.join(graph_indir, graph_file) for graph_file in graph_files])
+    graph_files = [i for i in (os.path.join(graph_indir, f) for f in os.listdir(graph_indir)) if os.path.isfile(i)]
 
     graphs = []
 

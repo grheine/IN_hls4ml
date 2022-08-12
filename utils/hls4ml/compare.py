@@ -37,7 +37,9 @@ def compare_hls4ml(graphs, output_dir, torch_model, hls_model, torch_wrapper, al
         # torch prediction
         torch_pred = torch_model(data).detach().cpu().numpy()
         torch_pred = np.reshape(torch_pred[:target.shape[0]], newshape=(target.shape[0],)) #drop dummy edges
-        if i==0: np.savetxt(f'{output_dir}/tb_data/output_predictions.dat', torch_pred.reshape(1, -1), fmt='%f', delimiter=' ')
+        if i==0: 
+            np.savetxt(f'{output_dir}/tb_data/output_predictions.dat', torch_pred.reshape(1, -1), fmt='%f', delimiter=' ')
+            print(f"writing test bench golden output for 1st graph to {output_dir}/tb_data/output_predictions.dat")
         
         # hls prediction
         hls_pred = hls_model.predict(data.hls_data)

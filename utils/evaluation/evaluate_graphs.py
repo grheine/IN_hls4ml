@@ -15,77 +15,98 @@ class evaluate_data:
         self.hits_curler = self.curler()
 
     def curler(self):
-          return self.events.assign(curler = self.events.groupby(['event_id', 'particle_id'])['layer_id'].diff() < 0)
+        diff = self.events.groupby(['event_id'])[['layer_id', 'particle_id']].diff()
+        back = (diff.layer_id < 0) & (diff.particle_id == 0)
+        s1 = self.events.assign(back=back).set_index('particle_id', append=True)
+        s2 = s1.rename(columns={'back':'curler'}).groupby(['event_id', 'particle_id'])['curler'].sum()>0
+        s3 = s1.merge(s2, left_index=True, right_on=['event_id', 'particle_id'])        
+        return s3
+    
+#     def pz_cut(self, hits):
+#         df = hits.groupby(['event_id', 'particle_id']).pz.mean().rename('curl') < self.pz_min
+# #         hits.set_index(['particle_id'], inplace = True, append = True)
+#         ev = hits.merge(df, left_index=True, right_on=['event_id', 'particle_id'])
+#         df2 = ev[ev.curl==False].drop(columns=['curl'])
+#         return df2
 
     def find_pzcut(self):
         df = self.hits_curler
         curler = df[df.curler]
         nocurler = df[df.curler==False]
-        N = len(curler) #curler=False
-        P = len(nocurler) #nocurler=True
+        N = len(curler.index.unique()) #curler=False
+        P = len(nocurler.index.unique()) #nocurler=True
         Ntotal = N+P #number of hits
 
-        cuts = np.linspace(0., 2., self.ncuts)
-        purity = [] #true positive rate, sensitivity
-        efficiency = [] #positive predictive value/ precision
+        cuts = np.linspace(-0.05, 0.05, self.ncuts)
+        purity = [] #positive predictive value/ precision
+        efficiency = [] #true positive rate, sensitivity    
         TNR = [] #correctly removed curlers
         FNR = [] #incorrectly removed no-curlers
 
         for pz_min in tqdm(cuts):
-            FP = len(curler[curler.pz>pz_min]) #false positive
-            TP = len(nocurler[nocurler.pz>pz_min]) #true positive
-            purity.append(TP/P)
-            efficiency.append(TP/(TP+FP))
+            FP = (curler.groupby(['event_id', 'particle_id']).pz.mean()>pz_min).sum() #false positive
+            TP = (nocurler.groupby(['event_id', 'particle_id']).pz.mean()>pz_min).sum() #true positive
+            purity.append(TP/(TP+FP))
+            efficiency.append(TP/P)
+
+            TN = (curler.groupby(['event_id', 'particle_id']).pz.mean()<=pz_min).sum()
+            FN = (nocurler.groupby(['event_id', 'particle_id']).pz.mean()<=pz_min).sum()
+            TNR.append(TN/N)
+            FNR.append(FN/P)
             
         cutPos =  np.argmax((np.array(purity)+np.array(efficiency))[1:]) +1
         best_cut = cuts[cutPos]
-        print(f'best pz cut at {best_cut}')
-        return purity, efficiency, cuts, cutPos
+        print(f'best pz cut at {best_cut}, removed curlers (TNR): {TNR[cutPos]}, lost no-curlers (FNR): {FNR[cutPos]}')
+        
+        return purity, efficiency, cuts, cutPos, TNR, FNR
 
-    def plot_pzcut(self):
+    def plot_pzcut(self, eff_scale=1.):
         plt.style.use("kit")
-        purity, efficiency, cuts, cutPos = self.find_pzcut()
+        purity, efficiency, cuts, cutPos, TNR, FNR = self.find_pzcut()
+        cutPos = 0.005
 
         fig, ax1 = plt.subplots(figsize=(8,6))
         
 
         ax1.plot(cuts, purity, marker='None', label='purity')
-        ax1.set_ylim(top=1.01)
         ax1.set_ylabel('purity')
+        watermark(py=0.9, fontsize=18, shift=0.16, scale=1.2)
 
         ax2 = ax1.twinx()
         ax2.plot([], [], ' ')
         ax2.plot(cuts, efficiency, marker='None', label='efficiency', linestyle='--')
-        ax2.axvline(cuts[cutPos], ymax=0.85, linestyle=':', color='black',label=f'best $p_z$ cut={cuts[cutPos]:.2f}')
+        ax2.axvline(cuts[cutPos], ymax=0.8, linestyle= (0, (1, 10)), color='black',label=f'best $p_z$ cut={cuts[cutPos]:.2f}')
         ax2.plot([], [], ' ', label=f'pur = {purity[cutPos]:.3f}')
         ax2.plot([], [], ' ', label=f'eff = {efficiency[cutPos]:.3f}')
         ax2.set_ylabel('efficiency')
 
+        bottomylim, topylim = ax2.get_ylim()
+        ax2.set_ylim(top=bottomylim+(topylim-bottomylim)*eff_scale)
+
         lines, labels = ax1.get_legend_handles_labels()
         lines2, labels2 = ax2.get_legend_handles_labels()
 
-        watermark(py=0.9, fontsize=18, shift=0.16, scale=1.8)
+        
         ax1.set_xlabel(r'$p_z$ cut (GeV)')
         ax2.legend(lines + lines2, labels + labels2, loc='upper right', fontsize=14, frameon = True, framealpha = 0.6, facecolor = 'white', edgecolor = 'white')
-        plt.savefig('img/pz_cut.pdf', bbox_inches='tight')
+        plt.savefig('img/3_pz_cut.pdf', bbox_inches='tight')
         plt.show()
         
-        return cuts, purity, efficiency
 
     def curler_dist(self):
-        hits = self.hits_curler
-        curler = hits[hits.curler]
-        nocurler = hits[hits.curler==False]
-
+        fig = plt.figure(figsize=(8,6))
+        df = self.hits_curler
+        curler = df[df.curler].groupby(['event_id', 'particle_id']).pz.mean()
+        nocurler = df[df.curler == False].groupby(['event_id', 'particle_id']).pz.mean()
+        print(f'number of no-curlers: {len(nocurler)}, number of curlers: {len(curler)}, proportion of curlers: {len(curler)/len(nocurler)}')
         plt.style.use("kit_hist")
-        plt.hist([nocurler.pz, curler.pz], histtype='stepfilled', facecolor='white',stacked=True, label=['no curler', 'curler'])
+        plt.hist(curler, bins=20, histtype='stepfilled', facecolor='white', label='curler')
         plt.yscale('log')
-        # plt.ylim(top=200000)
-        watermark(py=0.9, fontsize=18, shift=0.16,scale=1.03)
+        watermark(py=0.9, fontsize=18, shift=0.16, scale=1.2)
         plt.xlabel(r'$p_z$ (GeV)')
         plt.ylabel('counts')
         plt.legend()
-        plt.savefig('img/pzCut.pdf', bbox_inches='tight')
+        plt.savefig('img/3_curler_histo.pdf', bbox_inches='tight')
         plt.show()
 
 class evaluate_graphs():
@@ -138,34 +159,55 @@ class evaluate_graphs():
                     else:
                         print(lp)
 
+        # metrics
+        Ntotal = 0.5 * len(x) * (len(x)-1)
+        P = truth_edges
+        N = Ntotal - P
+        TP = torch.sum(y).item()
+        FP = len(y) - TP
+        FN = P - TP
+        TN = N - FP
+        
+        TNR = TN/N
+        FNR = FN/P        
 
         # number of edges labelled as true compared to actual true number of edges 
         if truth_edges==0:
             efficiency = 0
         else:
-            efficiency = torch.sum(y).item()/truth_edges
-#         print('number of labelled true edges', torch.sum(y), 'number of counted true edges', truth_edges)
-        # number of true edges to total number of edges 
-        purity = torch.sum(y).item()/len(y)
+            efficiency = TP/P
+        
         if (efficiency > 1.0): 
             print('\nERROR: Efficiency>1!\n')
             bad_graph.append((graph,hits))
 
-#         purities.append(purity)
-#         efficiencies.append(efficiency)
+        # number of true edges to total number of edges 
+        purity = TP/len(y)
+
         n_edges = len(y)
         n_nodes = len(x)
         n_particles_after = pid.nunique()
         n_particles_before = len(particle_ids)
 
-        result = {'efficiency':efficiency, 'purity':purity, 'graph_edges':n_edges, 'graph_true_edges': torch.sum(y).item(), 'n_true_edges': truth_edges, 'graph_nodes':n_nodes, 'n_particles_before_cut':n_particles_before,  'n_particles_after_cut':n_particles_after}
-        if efficiency > 1: print(result)
+        result = {
+            'efficiency':efficiency, 
+            'purity':purity, 
+            'graph_true_edges': TP, 
+            'n_true_edges': P,
+            'TNR': TNR,
+            'FNR': FNR,
+            'graph_edges':n_edges, 
+            'graph_nodes':n_nodes, 
+            'n_particles_before_cut':n_particles_before,  
+            'n_particles_after_cut':n_particles_after
+        }
+            
         return result, bad_graph
     
     def evaluate_graphs(self, show_progress=True):
         nevents = len(self.graphs)
         data = self.data
-        efficiency, purity = [], []
+        efficiency, purity, TNR, FNR = [], [], [], []
         bad_graphs = []
 
 #         for evt_id in tqdm(range(nevents)):
@@ -175,6 +217,8 @@ class evaluate_graphs():
             evaluation, bad_graph = self.evaluate_graph(graph, df)
             efficiency.append(evaluation['efficiency'])
             purity.append(evaluation['purity'])
+            TNR.append(evaluation['TNR'])
+            FNR.append(evaluation['FNR'])
             if bad_graph:
                 bad_graphs.append(bad_graph)
-        return purity, efficiency, bad_graphs
+        return np.mean(purity), np.mean(efficiency), np.mean(TNR), np.mean(FNR), bad_graphs
