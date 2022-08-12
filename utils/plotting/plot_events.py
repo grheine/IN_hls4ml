@@ -137,9 +137,9 @@ class plot_event:
     def __plot_display(self, name, title=None, xlabel='z (cm)', ylabel='x (cm)', py=0.9, fontsize=18):
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
-        plt.title(title)
         plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
         watermark(py=py, fontsize=fontsize,  shift=self.shift, scale=self.scale)
+        plt.text(s=title, x=0.033, y=0.83, ha='left', transform=plt.gca().transAxes, fontsize=16)
         plt.savefig(name)
         plt.show()
         

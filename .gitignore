@@ -13,3 +13,4 @@ playground*
 hls_output*
 *__pycache__*
 hls4ml_test.py
+./data/
