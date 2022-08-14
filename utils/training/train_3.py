@@ -58,7 +58,7 @@ class train_model:
         self.model.eval()
         val_loss = 0
         val_acc = torchmetrics.Accuracy(threshold)
-        losses = []
+        val_losses = []
         with torch.no_grad():                # disableing gradient calculation for inference 
             for data in self.val_loader:
                 data = data.to(self.device)
@@ -67,47 +67,48 @@ class train_model:
                 output = self.model(data).squeeze(1)
                 val_loss = F.binary_cross_entropy(output,target)
                 val_acc.update(output, target.int())
-                losses.append(val_loss.item())
-
-        val_loss /= len(self.val_loader.dataset)
+                val_losses.append(val_loss.item())
+                
         print('\n Validation set: Average loss: {:.4f}\n, Accuracy: {:.4f}\n'
-              .format(val_loss, val_acc.compute()))
-        return np.nanmean(losses), val_acc.compute()
+              .format(np.mean(val_losses), val_acc.compute()))
+        
+        return np.nanmean(val_losses), val_acc.compute()
 
     def train_model(self):
         # initialize the early_stopping object
         early_stopping = EarlyStopping(patience=self.patience, verbose=True)
 
         losses, accs = [], []
-        val_losses, val_accs = [], []
+        val_losses, val_accs = [], []       
+        output = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}
 
-        epochs = self.epochs
-
-        for epoch in tqdm(range(1, epochs + 1)):
+        for epoch in tqdm(range(1, self.epochs + 1)):
             train_loss, train_acc = self.train(epoch)
-            losses.append(train_loss)
-            accs.append(train_acc)
             val_loss, val_acc = self.validate(threshold=0.5)
-            val_losses.append(val_loss)
-            val_accs.append(val_acc)
             
             self.scheduler.step()
 
             # early_stopping needs the validation loss to check if it has decreased, 
             # and if it has, it will make a checkpoint of the current model
             early_stopping(val_loss, self.model)
-
             if early_stopping.early_stop:
                 print("Early stopping")
                 break
                 # load the last checkpoint with the best model
+         
+            output['train_loss'].append(train_loss)
+            output['train_acc'].append(train_acc)
+            output['val_loss'].append(val_loss)
+            output['val_acc'].append(val_acc)
+
+        nevents = len(self.train_loader)
+        np.save(f'train_output/train_{nevents}', output)
                 
+        #save best model
         self.model.load_state_dict(torch.load('models/checkpoint.pt'))
-        
-        #save model
         trained_model = copy.deepcopy(self.model)
 
         torch.save(self.model.state_dict(), f"models/{self.name}_state_dict.pt")
         torch.save(self.model, f'models/{self.name}.pt')
         
-        return  self.model, losses, accs, val_losses, val_accs
+        return  self.model, output

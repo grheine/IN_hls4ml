@@ -1,4 +1,5 @@
 import os
+import random
 import numpy as np
 from collections import namedtuple, OrderedDict
 from utils.data.graphdata import GraphDataset
@@ -10,7 +11,7 @@ def load_graphs(graph_indir, n_graphs, node_dim, edge_dim):
 
     graphs = []
 
-    for file in graph_files[:n_graphs]:
+    for file in random.sample(graph_files, n_graphs):
         x, edge_attr, edge_index, y, pid = np.load(file, allow_pickle=True)
         G = Graph(x[:,:node_dim], edge_attr[:][:edge_dim], edge_index, y, pid)
         graphs.append(G)

@@ -130,9 +130,8 @@ class build_graphs:
             n_hits = len(dfhits)            
             n_edges = len(segments)
             
-#             dfhits = hits[['x', 'z', 'theta']]
             
-            X = dfhits[['x','z','theta']].values.astype(np.float32)
+            X = dfhits[['x','z','theta', 'iso']].values.astype(np.float32)
             edge_attr = np.stack((dx, dz, dtheta, diso))/feature_scale[:4,np.newaxis]
             edge_index = np.array(np.vstack(segments).T)
             y = np.array(y, dtype=np.int8)

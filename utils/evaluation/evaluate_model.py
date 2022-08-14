@@ -9,13 +9,13 @@ from utils.plotting.plot import watermark
 
 class evaluate_model:
     
-    def __init__(self, model, test_data, train_loss=1., val_loss=1., train_acc=0., val_acc=0., cut=0.5, ncuts=100):
+    def __init__(self, model, test_data, output=None, cut=0.5, ncuts=100):
        
         self.model = model
-        self.train_loss = train_loss
-        self.val_loss = val_loss
-        self.train_acc = train_acc
-        self.val_acc = val_acc 
+        self.train_loss = output['train_loss']
+        self.val_loss = output['val_loss']
+        self.train_acc = output['train_acc']
+        self.val_acc = output['val_acc'] 
         self.cut = cut
         self.minposs = -1
         self.test_data = test_data

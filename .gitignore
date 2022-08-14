@@ -14,3 +14,6 @@ hls_output*
 *__pycache__*
 hls4ml_test.py
 ./data/
+train_output
+utils/training/train_dezoort.py
+data/

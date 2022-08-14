@@ -76,15 +76,14 @@ class plot_information:
         
     def plot_graph_dimensions(self, nnodes, nedges, slope):
         plt.style.use("kit_hist")
-               
+    
         plt.figure(figsize=(15,6))
         plt.subplot(121)
-        hist3 = plt.hist(nnodes, bins=20, histtype='stepfilled', stacked=True, facecolor=(0,0,0,0))
+        hist3 = plt.hist(nnodes, histtype='stepfilled', stacked=True, facecolor=(0,0,0,0))
         plt.yscale("log")
         plt.xlabel("hits per event")
         plt.ylabel("counts")
         watermark(shift=0.2)
-        
         plt.subplot(122)
         hist4 = plt.hist(nedges, histtype='stepfilled', stacked=True, facecolor=(0,0,0,0), label=list(map(str, slope)))
         plt.yscale("log")
@@ -97,8 +96,6 @@ class plot_information:
         plt.subplots_adjust(wspace=0.3)
         plt.savefig("img/3_graph_dimensions.pdf")
         plt.show()  
-        print(f'mean number of hits: {np.mean(nnodes):.2f}')
-        print(f'mean number of edges: {np.mean(nedges, axis=1)} corresponding to slope cuts {slope}')
         
     
     def plot_purity_efficiency(self, cuts, cut_pos, purity, efficiency, TNR, FNR, variable=None, xname='cut', yname=None, save_name=None):           
@@ -137,11 +134,40 @@ class plot_event:
     def __plot_display(self, name, title=None, xlabel='z (cm)', ylabel='x (cm)', py=0.9, fontsize=18):
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
+        plt.title(title)
         plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
         watermark(py=py, fontsize=fontsize,  shift=self.shift, scale=self.scale)
-        plt.text(s=title, x=0.033, y=0.83, ha='left', transform=plt.gca().transAxes, fontsize=16)
         plt.savefig(name)
         plt.show()
+        
+    def get_edges(self, ids):
+        
+        id1, id2 = ids
+        X = np.array(self.graph.x)
+        
+        if self.graph.x.shape[1] == 4:
+            x,z,_,_ = np.vstack((X[int(id1)], X[int(id2)])).T
+        elif self.graph.x.shape[1] == 3:
+            x,z,_ = np.vstack((X[int(id1)], X[int(id2)])).T
+        else:
+            x,z = np.vstack((X[int(id1)], X[int(id2)])).T
+            
+        return x, z
+    
+    def get_hits(self, pid):
+        
+        X = np.array(self.graph.x)
+        
+        if self.graph.x.shape[1] == 4:
+            x,z,_, iso = X[self.graph.pid==pid].T
+        elif self.graph.x.shape[1] == 3:
+            x,z,_ = X[self.graph.pid==pid].T 
+        else:
+            x,z = X[self.graph.pid==pid].T 
+        
+        return x, z
+        
+        
         
 
     def plot_eventdisplay(self):
@@ -154,9 +180,9 @@ class plot_event:
         evID = event.index.unique()[0]
 
         plt.figure(figsize=(10,6))
-        for ID in ids:
-            df = event.loc[event.particle_id==ID]
-            plt.scatter(df.z, df.x, s=df.iso*200, marker=r'$\odot$', linestyle='None', label=f'MC particle {ID:.0f}')
+        for pid in ids:
+            df = event.loc[event.particle_id==pid]
+            plt.scatter(df.z, df.x, s=df.iso*200, marker=r'$\odot$', linestyle='None', label=f'MC particle {pid:.0f}')
         self.__plot_display('img/3_rawdata_event.pdf', f'event ID = {evID}')
         
         
@@ -167,36 +193,29 @@ class plot_event:
         segments = self.graph.edge_index
         segments = np.stack((segments[0], segments[1]), axis=1)
 
-        X = np.array(self.graph.x)
         y = np.array(self.graph.y)
         evID = self.graph.pid.index.unique()[0]
         plt.style.use("kit")
         plt.figure(figsize=(10,6))
 
         for seg in segments:
-            id1, id2 = seg
-            if self.graph.x.shape == 4:
-                x,z,theta,iso = np.vstack((X[int(id1)], X[int(id2)])).T
-            else:
-                x,z,theta = np.vstack((X[int(id1)], X[int(id2)])).T
-                
+            x, z = self.get_edges(seg)                
             plt.plot(z*100, x*10, linewidth=1.0, linestyle='-', marker='None', color='black') 
 
 
         ids = np.unique(self.graph.pid)    
-        for ID in ids:
-            if self.graph.x.shape == 4:
-                x,z,_, iso = X[self.graph.pid==ID].T
-            else:
-                x,z,_ = X[self.graph.pid==ID].T 
-                
-            plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {ID:.0f}')
+        for pid in ids:
+            x, z = self.get_hits(pid)               
+            plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {pid:.0f}')
+            
         self.__plot_display('img/3_graph_event.pdf', f'event ID = {evID}')
         
     def plot_traineddisplay(self, model, disc=0, device='cpu'):       
         '''
         A method to plot one graph of the trained model in the 'x-z' projection for event ID: evID
         '''
+        
+        plt.style.use("kit")
         data = GraphDataset(self.graph)[0]
         output = model(data)
 
@@ -210,23 +229,42 @@ class plot_event:
 
         for row in p_t:
             id1, id2, output = row
-            if output < 0.: continue
-            if self.graph.x.shape == 4:
-                x,z,theta, iso = np.vstack((X[int(id1)], X[int(id2)])).T
-            else:
-                x,z,theta = np.vstack((X[int(id1)], X[int(id2)])).T                
+            if output < disc: continue
+                
+            x, z = self.get_edges([id1, id2]) 
             plt.plot(z*100, x*10, linewidth=1.0, linestyle='-', marker='None', c=cmap.reversed()(output),) 
 
         ids = np.unique(data.pid.T[1])    
-        for ID in ids:
-            if self.graph.x.shape == 4:
-                x,z,_, iso = X[data.pid.T[1]==ID].T
-            else: 
-                x,z,_ = X[data.pid.T[1]==ID].T
-            plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {ID:.0f}')
+        for pid in ids:
+            x, z = self.get_hits(pid)
+            
+            plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {pid:.0f}')
 
         sm = plt.cm.ScalarMappable(cmap=cmap.reversed())
         sm.set_array([]) 
         plt.colorbar(sm, label='GNN output')       
 
         self.__plot_display('img/3_trained_event.pdf', f'event ID = {evID}')
+        
+        
+    def plot_tracklet_display(self, tracklets):
+        '''
+        A method to plot one graph in the 'x-z' projection for event ID: evID
+        '''
+
+        y = np.array(self.graph.y)
+        evID = self.graph.pid.index.unique()[0]
+        plt.style.use("kit")
+        plt.figure(figsize=(10,6))
+
+        for t in tracklets:
+            x, z = t[:,1:3].T      
+            plt.plot(z*100, x*10, linewidth=1.0, linestyle='-', marker='None') 
+
+
+        ids = np.unique(self.graph.pid)    
+        for pid in ids:
+            x, z = self.get_hits(pid)               
+            plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {pid:.0f}')
+            
+        self.__plot_display('img/3_fulltracks.pdf', f'event ID = {evID}')
