@@ -7,41 +7,53 @@ from ..data.graphdata import GraphDataset
 
 class plot_information:
     
-    def __init__(self, events=None, graphs=None):
+    def __init__(self, events=None, graphs=None, nevents=30000, pz_min=None, slope_max=None):
         self.events = events
         self.graphs = graphs
+        self.nevents = nevents
+        self.pz_min = pz_min
+        self.slope_max = slope_max
 
     def plot_ntracks_nhits(self):
         # check how many particles and hits there are per event
+        
+        plt.figure(figsize=(8,6))
         plt.style.use("kit_hist")
         nparticles = self.events.groupby('event_id')['particle_id'].nunique()
         nhits = self.events.groupby('event_id')['hit_id'].nunique()
+        nevents = len(self.events.index.unique(level=0))
 
         hits = nhits.to_numpy().T
         particles = nparticles.to_numpy().T
 
-        plt.figure(figsize=(15,6))
-        plt.subplot(121)
+        plt.figure(figsize=(8,6))
         hist = plt.hist(particles, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
-        plt.xlabel("particles per event")
-        plt.ylabel("counts")
-        watermark(py=0.9, shift=0.2)
-        plt.subplot(122)
+        plt.xlabel(r"log($N_{particles}$)")
+        binwidth = np.mean(np.diff(hist[1]))
+        plt.ylabel(f'Entries / ({binwidth:.2f})')
+        infos = r'$N_{events}=$'+ f'{nevents}'
+        watermark(scale=1.3, information=infos)
+        plt.savefig("img/3_Nparticles.pdf")
+        plt.show()
+        
+
         hist = plt.hist(hits, histtype='stepfilled', facecolor=(0,0,0,0))
         plt.yscale("log")
-        plt.xlabel("hits per event")
-        plt.ylabel("counts")
-        watermark(shift=0.2)
-        plt.subplots_adjust(wspace=0.3)
-        plt.savefig("img/NtracksAndHits.pdf")
+        binwidth = np.mean(np.diff(hist[1]))
+        plt.ylabel(f'Entries / ({binwidth:.2f})')
+        plt.xlabel(r"log($N_{hits}$)")
+        infos = r'$N_{events}=$'+ f'{nevents}'
+        watermark(scale=1.3, information=infos)
+        plt.savefig("img/3_Nhits.pdf")
         plt.show()
+        
         print(f'mean number of particles: {np.mean(particles):.2f}, mean number of hits: {np.mean(hits):.2f}')
        
     
     def merge_graphs(self):
         
-        nodes, edges, _, _, _ = self.graphs[0]
+        nodes, edges = np.zeros(self.graphs[0].x.shape), np.zeros(self.graphs[0].edge_attr.shape)
         for g in tqdm(self.graphs):
             nodes = np.concatenate((nodes, np.fliplr(g.x)))
             edges = np.concatenate((edges, g.edge_attr), axis=1)
@@ -53,76 +65,77 @@ class plot_information:
         plt.style.use("kit_hist")
         
         nodes, edges = self.merge_graphs()
+        nevents = len(self.graphs)
         
-        plt.figure(figsize=(15,6))
-        plt.subplot(121)
-        hist1 = plt.hist(nodes, label=['theta','z','x'], histtype='stepfilled', facecolor=(0,0,0,0), stacked=True)
+        hist1 = plt.hist(nodes, label=['x','z','theta'], histtype='stepfilled', facecolor=(0,0,0,0), stacked=True, hatch='///')
+        plt.style.use('kit')
+        plt.hist(nodes, histtype='step', stacked=True, facecolor=(0,0,0,0), edgecolor='black', linestyle='-', hatch=None)
         plt.yscale("log")
-        plt.xlabel("node attributes")
-        plt.ylabel("counts")
-        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
-        watermark(shift=0.2)
-        plt.subplot(122)
-        hist2 = plt.hist(np.fliplr(edges.T), label=['dtheta','dz','dx'], histtype='stepfilled', facecolor=(0,0,0,0), stacked=True)
-        plt.yscale("log")
-        plt.xlabel("edge attributes")
-        plt.ylabel("counts")
-        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
-        watermark(shift=0.2)
-        plt.subplots_adjust(wspace=0.3)
-        plt.savefig("img/3_graphdata.pdf")
+        plt.xlabel("log(node attributes)")
+        binwidth = np.mean(np.diff(hist1[1]))
+        plt.ylabel(f'Entries / ({binwidth:.2f})')
+        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white')
+        infos = r'$N_{events}=$'+ f'{nevents},  ' + r'$p_z^{min}= $'+f'{self.pz_min}'
+        watermark(scale=1.3, information=infos)
+        plt.savefig('img/3_node_attr.pdf')
         plt.show()
         
+
+        plt.style.use('kit_hist')
+        hist2 = plt.hist(edges.T, label=['dx','dz','dtheta'], histtype='stepfilled', stacked=True, facecolor=(0,0,0,0) , hatch='///')
+        plt.style.use('kit')
+        plt.hist(edges.T, histtype='step', stacked=True, facecolor=(0,0,0,0), edgecolor='black', linestyle='-', hatch=None)
+        plt.yscale("log")
+        plt.xlabel("log(edge attributes)")
+        binwidth = np.mean(np.diff(hist2[1]))
+        plt.ylabel(f'Entries / ({binwidth:.2f})')
+        plt.legend(loc='center right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white')
+        infos = r'$N_{events}=$'+ f'{nevents},  ' + r'$p_z^{min}= $'+f'{self.pz_min}' + r',  $s^{max}= $'+f'{self.slope_max}'
+        watermark(scale=1.3, information=infos)
+        plt.subplots_adjust(wspace=0.3)
+        plt.savefig("img/3_edge_attr.pdf")
+        plt.show()
+        return(hist1)
         
-    def plot_graph_dimensions(self, nnodes, nedges, slope):
+        
+    def plot_graph_dimensions(self, nnodes, nedges, slope, ntestevents):
         plt.style.use("kit_hist")
     
-        plt.figure(figsize=(15,6))
-        plt.subplot(121)
-        hist3 = plt.hist(nnodes, histtype='stepfilled', stacked=True, facecolor=(0,0,0,0))
-        plt.yscale("log")
-        plt.xlabel("hits per event")
-        plt.ylabel("counts")
-        watermark(shift=0.2)
-        plt.subplot(122)
-        hist4 = plt.hist(nedges, histtype='stepfilled', stacked=True, facecolor=(0,0,0,0), label=list(map(str, slope)))
-        plt.yscale("log")
-        plt.xlabel("edges per event")
-        plt.ylabel("counts")
-        leg = plt.legend(title='slope cut')
-        leg._legend_box.align = "right"
-        leg.get_title().set_fontsize('15')
-        watermark(shift=0.2)
-        plt.subplots_adjust(wspace=0.3)
-        plt.savefig("img/3_graph_dimensions.pdf")
-        plt.show()  
+        plt.style.use('kit')
+        plt.errorbar(slope,nedges[:,0],nedges[:,1], linestyle='')
+        plt.xlabel(r'$s^{max}$')
+        plt.ylabel(r'$N_{edges}$')
+        infos = r'$N_{events}=$'+ f'{ntestevents},  ' + r'$p_z^{min}= $'+f'{self.pz_min}'
+        watermark(scale=1.1, information=infos )
+        plt.savefig("img/3_Nedges_afterfiltering.pdf")
+        plt.show()
         
     
-    def plot_purity_efficiency(self, cuts, cut_pos, purity, efficiency, TNR, FNR, variable=None, xname='cut', yname=None, save_name=None):           
-        plt.style.use("kit") 
+    def plot_purity_efficiency(self, cuts, cut_pos, purity, efficiency, TNR, FNR, nevents, variable=None, xname='threshold', yname=None, save_name=None, add_inf=''):           
+        plt.style.use("kit")      
         
-        plt.figure(figsize=(8,6))
+        plt.figure(figsize=(9,6))
         plt.plot(cuts, purity, label='purity', marker='None')
         plt.plot(cuts, efficiency, label='efficiency', marker='None')
 
         if cut_pos:
-            plt.axvline(cuts[cut_pos], ymax=0.8, linestyle=':', color='black',label=f'best {variable} cut={cuts[cut_pos]:.3f}')
+            plt.axvline(cuts[cut_pos], ymax=0.8, linestyle=':', color='black',label=f'best {variable} = {cuts[cut_pos]:.3f}')
             plt.plot([], [], ' ', label=f'pur = {purity[cut_pos]:.3f}')
             plt.plot([], [], ' ', label=f'eff = {efficiency[cut_pos]:.3f}')
         
-        watermark(scale=1.5)
+        infos = r'$N_{events}=$'+ f'{nevents}' + add_inf
+        watermark(scale=1.7, information=infos, shift=0.14)
         plt.xlabel(xname)
         if yname:
             plt.ylabel(yname)
-        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
+        plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white')
         plt.savefig(save_name, bbox_inches='tight')
         plt.show() 
         
-        print(f'best pz cut at {cuts[cut_pos]:.4f}, removed bad (TNR): {TNR[cut_pos]:.3f}, lost good (FNR): {FNR[cut_pos]:.3f}')
+        print(f'best pz threshold at {cuts[cut_pos]:.4f}, removed bad (TNR): {TNR[cut_pos]:.3f}, lost good (FNR): {FNR[cut_pos]:.3f}')
 
         
         
-
 class plot_event:
     
     def __init__(self, event=None, graph=None, scale=1.4, shift=0.13):
@@ -134,9 +147,8 @@ class plot_event:
     def __plot_display(self, name, title=None, xlabel='z (cm)', ylabel='x (cm)', py=0.9, fontsize=18):
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
-        plt.title(title)
         plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
-        watermark(py=py, fontsize=fontsize,  shift=self.shift, scale=self.scale)
+        watermark(py=py, fontsize=fontsize,  shift=self.shift, scale=self.scale, information=title)
         plt.savefig(name)
         plt.show()
         
@@ -157,19 +169,14 @@ class plot_event:
     def get_hits(self, pid):
         
         X = np.array(self.graph.x)
+        X_particle = X[self.graph.pid==pid].T
         
-        if self.graph.x.shape[1] == 4:
-            x,z,_, iso = X[self.graph.pid==pid].T
-        elif self.graph.x.shape[1] == 3:
-            x,z,_ = X[self.graph.pid==pid].T 
-        else:
-            x,z = X[self.graph.pid==pid].T 
+        x = X_particle[0]
+        z = X_particle[1]
         
         return x, z
+               
         
-        
-        
-
     def plot_eventdisplay(self):
         '''
         A method to plot one event in the 'x-z' projection for event ID: evID
@@ -190,6 +197,7 @@ class plot_event:
         '''
         A method to plot one graph in the 'x-z' projection for event ID: evID
         '''
+        plt.style.use("kit")
         segments = self.graph.edge_index
         segments = np.stack((segments[0], segments[1]), axis=1)
 
@@ -245,26 +253,3 @@ class plot_event:
         plt.colorbar(sm, label='GNN output')       
 
         self.__plot_display('img/3_trained_event.pdf', f'event ID = {evID}')
-        
-        
-    def plot_tracklet_display(self, tracklets):
-        '''
-        A method to plot one graph in the 'x-z' projection for event ID: evID
-        '''
-
-        y = np.array(self.graph.y)
-        evID = self.graph.pid.index.unique()[0]
-        plt.style.use("kit")
-        plt.figure(figsize=(10,6))
-
-        for t in tracklets:
-            x, z = t[:,1:3].T      
-            plt.plot(z*100, x*10, linewidth=1.0, linestyle='-', marker='None') 
-
-
-        ids = np.unique(self.graph.pid)    
-        for pid in ids:
-            x, z = self.get_hits(pid)               
-            plt.plot(z*100, x*10, linestyle='None', label=f'MC particle {pid:.0f}')
-            
-        self.__plot_display('img/3_fulltracks.pdf', f'event ID = {evID}')

@@ -21,13 +21,6 @@ class evaluate_data:
         s2 = s1.rename(columns={'back':'curler'}).groupby(['event_id', 'particle_id'])['curler'].sum()>0
         s3 = s1.merge(s2, left_index=True, right_on=['event_id', 'particle_id'])        
         return s3
-    
-#     def pz_cut(self, hits):
-#         df = hits.groupby(['event_id', 'particle_id']).pz.mean().rename('curl') < self.pz_min
-# #         hits.set_index(['particle_id'], inplace = True, append = True)
-#         ev = hits.merge(df, left_index=True, right_on=['event_id', 'particle_id'])
-#         df2 = ev[ev.curl==False].drop(columns=['curl'])
-#         return df2
 
     def find_pzcut(self):
         df = self.hits_curler
@@ -54,57 +47,31 @@ class evaluate_data:
             TNR.append(TN/N)
             FNR.append(FN/P)
             
-        cutPos =  np.argmax((np.array(purity)+np.array(efficiency))[1:]) +1
+        cutPos =  np.argmin(np.abs(np.array(purity)-np.array(efficiency)))
         best_cut = cuts[cutPos]
-        print(f'best pz cut at {best_cut}, removed curlers (TNR): {TNR[cutPos]}, lost no-curlers (FNR): {FNR[cutPos]}')
         
         return purity, efficiency, cuts, cutPos, TNR, FNR
 
-    def plot_pzcut(self, eff_scale=1.):
-        plt.style.use("kit")
-        purity, efficiency, cuts, cutPos, TNR, FNR = self.find_pzcut()
-        cutPos = 0.005
-
-        fig, ax1 = plt.subplots(figsize=(8,6))
-        
-
-        ax1.plot(cuts, purity, marker='None', label='purity')
-        ax1.set_ylabel('purity')
-        watermark(py=0.9, fontsize=18, shift=0.16, scale=1.2)
-
-        ax2 = ax1.twinx()
-        ax2.plot([], [], ' ')
-        ax2.plot(cuts, efficiency, marker='None', label='efficiency', linestyle='--')
-        ax2.axvline(cuts[cutPos], ymax=0.8, linestyle= (0, (1, 10)), color='black',label=f'best $p_z$ cut={cuts[cutPos]:.2f}')
-        ax2.plot([], [], ' ', label=f'pur = {purity[cutPos]:.3f}')
-        ax2.plot([], [], ' ', label=f'eff = {efficiency[cutPos]:.3f}')
-        ax2.set_ylabel('efficiency')
-
-        bottomylim, topylim = ax2.get_ylim()
-        ax2.set_ylim(top=bottomylim+(topylim-bottomylim)*eff_scale)
-
-        lines, labels = ax1.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-
-        
-        ax1.set_xlabel(r'$p_z$ cut (GeV)')
-        ax2.legend(lines + lines2, labels + labels2, loc='upper right', fontsize=14, frameon = True, framealpha = 0.6, facecolor = 'white', edgecolor = 'white')
-        plt.savefig('img/3_pz_cut.pdf', bbox_inches='tight')
-        plt.show()
-        
 
     def curler_dist(self):
-        fig = plt.figure(figsize=(8,6))
+               
         df = self.hits_curler
+        nevents = len(self.events.index.unique(level=0))
+        
         curler = df[df.curler].groupby(['event_id', 'particle_id']).pz.mean()
         nocurler = df[df.curler == False].groupby(['event_id', 'particle_id']).pz.mean()
         print(f'number of no-curlers: {len(nocurler)}, number of curlers: {len(curler)}, proportion of curlers: {len(curler)/len(nocurler)}')
+        
         plt.style.use("kit_hist")
-        plt.hist(curler, bins=20, histtype='stepfilled', facecolor='white', label='curler')
+        hist = plt.hist(curler, bins=20, histtype='stepfilled', facecolor='white', label='curler')
         plt.yscale('log')
-        watermark(py=0.9, fontsize=18, shift=0.16, scale=1.2)
-        plt.xlabel(r'$p_z$ (GeV)')
-        plt.ylabel('counts')
+        
+        infos = r'$N_{events}=$'+ f'{nevents}'
+        watermark(scale=1.3, information=infos)
+
+        plt.xlabel(r'log($p_z$/(GeV/c))')
+        binwidth = np.mean(np.diff(hist[1]))
+        plt.ylabel(f'Entries / ({binwidth:.2f} GeV/c)')
         plt.legend()
         plt.savefig('img/3_curler_histo.pdf', bbox_inches='tight')
         plt.show()
