@@ -1,6 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def infotext(nevents='', pzmin='', slopemax=''):
+    
+    text = []
+    
+    if nevents:
+        text.append(r'$N_{events}=$' + str(nevents))
+    if pzmin:
+        text.append(r'$p_z^{min}=$' + str(pzmin) + ' GeV/c')
+    if slopemax:
+        text.append(r'$s^{max}=$' + str(slopemax))
+        
+    infotext = ', '.join(text)
+    return infotext  
 
 def watermark(t=None,logo="PANDA", px=0.033, py=0.9, fontsize=18, information=None, t_color='#666666', alpha_logo=0.95, shift=0.16, bstyle='italic', scale = 1.4, *args, **kwargs):
     """

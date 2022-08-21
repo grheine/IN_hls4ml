@@ -10,14 +10,11 @@ from utils.plotting.plot import watermark
 
 class evaluate_model:
     
-    def __init__(self, model, test_data, pz_min, slope_max, output=None, cut=0.5, ncuts=100, name=''):
+    def __init__(self, model, test_data, pz_min, slope_max, train_output=None, cut=0.5, ncuts=100, name=''):
         self.name = name
         self.model = model
         self.infos = r'$N_{events}=$'+ f'{len(test_data)},  ' + r'$p_z^{min}= $'+f'{pz_min} GeV/c' + r',  $s^{max}= $'+f'{slope_max}'
-        self.train_loss = output['train_loss']
-        self.val_loss = output['val_loss']
-        self.train_acc = output['train_acc']
-        self.val_acc = output['val_acc'] 
+        self.train_output = train_output
         self.cut = cut
         self.minposs = -1
         self.test_data = test_data
@@ -28,11 +25,16 @@ class evaluate_model:
     def __GNNoutput__(self):
         MCtrue, MCfalse, targets, outputs = [], [], [], []
         for data in self.test_data:
-            data = data
             target = data.y
-            output = self.model(data).squeeze(1).detach().numpy() 
-            MCtrue_output = output[target==True]
-            MCfalse_output = output[target!=True]
+            output = self.model(data).squeeze(1).detach().numpy()
+            try:
+                MCtrue_output = output[target==True]
+            except IndexError:
+                MCtrue_output = np.array([0])
+            try:
+                MCfalse_output = output[target!=True]
+            except IndexError:
+                MCfalse_output = np.array([0])
             MCtrue+=list(MCtrue_output)
             MCfalse+=list(MCfalse_output)
             targets+= list(target.detach().numpy())
@@ -41,16 +43,19 @@ class evaluate_model:
 
         
     def plot_loss(self, early=True):
+        train_loss = output['train_loss']
+        val_loss = output['val_loss']
+
         plt.style.use("kit")
         plt.figure(figsize=(8,6))
-        n_epochs = len(self.train_loss)
-        minloss = min(self.val_loss)
-        plt.plot(range(1,len(self.train_loss)+1),self.train_loss, label='Training Loss', marker='None')
-        plt.plot(range(1,len(self.val_loss)+1),self.val_loss,label='Validation Loss', marker='None')
+        n_epochs = len(train_loss)
+        minloss = min(val_loss)
+        plt.plot(range(1,len(train_loss)+1),train_loss, label='Training Loss', marker='None')
+        plt.plot(range(1,len(val_loss)+1),val_loss,label='Validation Loss', marker='None')
         plt.plot([], [], ' ', label=f'best = {minloss:.4f}')
 
         # find position of lowest validation loss
-        self.minposs = self.val_loss.index(min(self.val_loss))+1 
+        self.minposs = val_loss.index(min(val_loss))+1 
         if self.minposs != n_epochs and early:
             plt.axvline(self.minposs, ymax=0.8, linestyle=':', color='black',label='Early Stopping')
 
@@ -62,11 +67,14 @@ class evaluate_model:
         plt.show()
         
     def plot_acc(self, early=True):
+        train_acc = output['train_acc']
+        val_acc = output['val_acc']
+
         plt.style.use("kit")
-        n_epochs = len(self.train_loss)
-        maxacc = max(self.val_acc)
-        plt.plot(range(1,len(self.train_acc)+1),self.train_acc, label='Training Accuracy', marker='None')
-        plt.plot(range(1,len(self.val_acc)+1),self.val_acc,label='Validation Accuracy', marker='None')
+        n_epochs = len(train_acc)
+        maxacc = max(val_acc)
+        plt.plot(range(1,len(train_acc)+1),train_acc, label='Training Accuracy', marker='None')
+        plt.plot(range(1,len(val_acc)+1),val_acc,label='Validation Accuracy', marker='None')
         plt.plot([], [], ' ', label=f'best = {maxacc:.4f}')
         
         # find position of lowest validation loss
@@ -92,12 +100,17 @@ class evaluate_model:
         plt.legend(bbox_to_anchor=(0.01,0.7), loc="center left")
         plt.savefig(f'img/3_GNNoutput_{self.name}.pdf', bbox_inches='tight')
         plt.show()
-        
-    def plot_roc(self):
-        plt.style.use("kit")
+
+    def get_roc(self):
         fpr, tpr, thresholds = roc_curve(self.target, self.output)
         auc_val=auc(fpr, tpr)
+        return (fpr, tpr, auc_val)
         
+    def plot_roc(self):
+        
+        fpr, tpr, auc_value = self.get_roc()
+        
+        plt.style.use("kit")
         plt.plot(fpr, tpr, label='AUC = {1:.4f}'.format('$p$',auc_val), marker='None')
         watermark(scale=1.4, information=self.infos) 
         plt.xlabel('False Positive Rate')

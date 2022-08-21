@@ -31,10 +31,10 @@ class hls4ml_scans():
         self.file = file
         self.keys = keys
         self.bb = ['BRAM', 'DSP', 'FF', 'LUT']
-        self.scans = self.get_scans()
+#         self.scans = self.get_scans()
         
-        zcu = {'BRAM': 1824, 'DSP': 2520, 'FF': 548160, 'LUT': 274080}
-        highflex = {'BRAM': 1200, 'DSP': 2928, 'FF': 597120, 'LUT': 298560}
+        self.zcu = {'BRAM': 1824, 'DSP': 2520, 'FF': 548160, 'LUT': 274080}
+        self.highflex = {'BRAM': 1200, 'DSP': 2928, 'FF': 597120, 'LUT': 298560}
 
     def get_scans(self):
         scans = {}
@@ -66,8 +66,8 @@ class hls4ml_scans():
 
         return scans
     
-    def show_compilation_time(self, key, fit_func=None, *params):
-        scans = np.asarray(self.scans[key]).T
+    def show_compilation_time(self, key, fit_func=None, *params):       
+        scans = np.asarray(self.get_scans()[key]).T
         value, config , comp_time, utils = scans       
         if key == 'precision':
             value = [int(v.strip('ap_fixed<').strip('>')[:2].strip(',')) for v in value]
@@ -83,7 +83,7 @@ class hls4ml_scans():
         
     def show_occupancy(self, key):
 
-        scans = np.asarray(self.scans[key]).T
+        scans = np.asarray(self.get_scans()[key]).T
         value, config , comp_time, utils = scans  
         if key == 'precision':
             value = [int(v.strip('ap_fixed<').strip('>')[:2].strip(',')) for v in value]
@@ -106,13 +106,13 @@ class hls4ml_scans():
         plt.figure(figsize=(40,15))
         for i,k in enumerate(self.keys, 1):
             plt.subplot(2,4,i)
-            test.show_occupancy(k)
+            self.show_occupancy(k)
         plt.show()
         
     def show_compilation_times(self):
         plt.figure(figsize=(40,15))
         for i,k in enumerate(self.keys, 1):
             plt.subplot(2,4,i)
-            test.show_compilation_time(k)
+            self.show_compilation_time(k)
         plt.show()        
     
