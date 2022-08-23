@@ -3,13 +3,14 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-from .plot import watermark
-from ..data.graphdata import GraphDataset
+from utils.plotting.plot import watermark, infotext
+from utils.data.graphdata import GraphDataset
 
 class plot_information:
     
-    def __init__(self, events=None, graphs=None, nevents=None, pz_min=None, slope_max=None, name=''):
+    def __init__(self, events=None, graphs=None, nevents=None, pz_min=None, slope_max=None, name='', title=''):
         self.name = name
+        self.title = title
         self.events = events
         self.graphs = graphs
         self.nevents = nevents
@@ -55,10 +56,12 @@ class plot_information:
     
     def merge_graphs(self):
         
-        nodes, edges = np.zeros(self.graphs[0].x.shape), np.zeros(self.graphs[0].edge_attr.shape)
-        for g in tqdm(self.graphs):
-            nodes = np.concatenate((nodes, g.x))
-            edges = np.concatenate((edges, g.edge_attr), axis=1)
+        nodes, edges = [], []
+        for g in self.graphs:
+            nodes.append(g.x)
+            edges.append(g.edge_attr)
+        nodes = np.concatenate(nodes)
+        edges = np.concatenate(edges, axis=1)
         
         return nodes, edges
     
@@ -78,6 +81,7 @@ class plot_information:
         plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white')
         infos = r'$N_{events}=$'+ f'{nevents},  ' + r'$p_z^{min}= $'+f'{self.pz_min} GeV/c'
         watermark(scale=1.3, information=infos)
+        plt.title(self.title, loc='right', color='#666666')
         plt.savefig(f'img/3_node_attr_{self.name}.pdf')
         plt.show()
         
@@ -91,6 +95,7 @@ class plot_information:
         plt.legend(loc='center right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white')
         infos = r'$N_{events}=$'+ f'{nevents},  ' + r'$p_z^{min}= $'+f'{self.pz_min} GeV/c' + r',  $s^{max}= $'+f'{self.slope_max}'
         watermark(scale=1.3, information=infos)
+        plt.title(self.title, loc='right', color='#666666')
         plt.subplots_adjust(wspace=0.3)
         plt.savefig(f"img/3_edge_attr_{self.name}.pdf")
         plt.show()
@@ -99,11 +104,13 @@ class plot_information:
     def plot_graph_dimensions(self, nnodes, nedges, slope, ntestevents):
     
         plt.style.use('kit')
+        plt.figure(figsize=(8,6))
         plt.errorbar(slope,nedges[:,0],nedges[:,1], linestyle='')
         plt.xlabel(r'$s^{max}$')
         plt.ylabel(r'$N_{edges}$')
         infos = r'$N_{events}=$'+ f'{ntestevents},  ' + r'$p_z^{min}= $'+f'{self.pz_min} GeV/c'
         watermark(scale=1.2, information=infos )
+        plt.title(self.title, loc='right', color='#666666')
         plt.savefig(f"img/3_Nedges_afterfiltering_{self.name}.pdf")
         plt.show()
         
@@ -122,6 +129,7 @@ class plot_information:
         
         infos = r'$N_{events}=$'+ f'{nevents}' + add_inf
         watermark(scale=scale, information=infos)
+        plt.title(self.title, loc='right', color='#666666')
         plt.xlabel(xname)
         if yname:
             plt.ylabel(yname)
@@ -135,18 +143,20 @@ class plot_information:
         
 class plot_event:
     
-    def __init__(self, event=None, graph=None, scale=1.4, shift=0.13, name=''):
+    def __init__(self, event=None, graph=None, scale=1.4, shift=0.13, name='', title=''):
         self.name = name
+        self.title = title
         self.event = event
         self.graph = graph
         self.scale = scale
         self.shift = shift
         
-    def __plot_display(self, name, title=None, xlabel='z (cm)', ylabel='x (cm)', py=0.9, fontsize=18):
+    def __plot_display(self, name, inf=None, xlabel='z (cm)', ylabel='x (cm)', py=0.9, fontsize=18):
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         plt.legend(loc='upper right', frameon = True, framealpha = 0.8, facecolor = 'white', edgecolor = 'white', fontsize=12)
-        watermark(py=py, fontsize=fontsize,  shift=self.shift, scale=self.scale, information=title)
+        watermark(py=py, fontsize=fontsize,  shift=self.shift, scale=self.scale, information=inf)
+        plt.title(self.title, loc='right', color='#666666')
         plt.savefig(name)
         plt.show()
         
@@ -234,8 +244,8 @@ class plot_event:
 #             sm.set_array([0,slope_max]) 
             plt.colorbar(sm, label='slope')       
             
-            
-        self.__plot_display(f'img/3_graph_event_{self.name}.pdf', f'event ID = {evID}')
+        infos = infotext(None, pz_min, slope_max, evID)    
+        self.__plot_display(f'img/3_graph_event_{self.name}.pdf', infos)
         
     def plot_traineddisplay(self, model, pz_min, slope_max, disc=0, device='cpu'):       
         '''
@@ -245,7 +255,6 @@ class plot_event:
         plt.style.use("kit")
         
         evID = self.graph.pid.index.unique()[0]
-        infos = f'event ID = {evID},  ' + r'$p_z^{min}= $'+f'{pz_min} GeV/c' + r',  $s^{max}= $'+f'{slope_max}'
         data = GraphDataset(self.graph)[0]
         output = model(data)
 
@@ -273,4 +282,9 @@ class plot_event:
         sm.set_array([]) 
         plt.colorbar(sm, label='GNN output')
         
+        
+        infos = infotext(None, pz_min, slope_max, evID)
         self.__plot_display(f'img/3_trained_event_{self.name}.pdf', infos)
+        
+        
+        
