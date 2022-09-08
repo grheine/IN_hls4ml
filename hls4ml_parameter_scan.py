@@ -22,10 +22,12 @@ from utils.hls4ml.wrappers import model_wrapper
 from hls4ml.utils.config import config_from_pyg_model
 from hls4ml.converters import convert_from_pyg_model
 
-os.environ['PATH'] = '/home/greta/prog/Xilinx/Vivado/2019.2/bin:' + os.environ['PATH']
+# os.environ['PATH'] = '/home/greta/prog/Xilinx/Vivado/2019.2/bin:' + os.environ['PATH']
+os.environ['PATH'] = '/opt/Xilinx/Vivado/2020.1/bin:' + os.environ['PATH']
+
 
 # from abdel.utils.models.interaction_network_pyg import InteractionNetwork
-from utils.models.interaction_network_hls4ml import InteractionNetwork
+from utils.models.interaction_network import InteractionNetwork
 from utils.hls4ml.load_torch import load_graphs, load_models 
 
 
@@ -34,6 +36,7 @@ def parse_args():
     add_arg = parser.add_argument
     add_arg('--part', type=str, default='xczu11eg-ffvc1760-2-e', help='for which fpga board to compile')
     add_arg('--synth',action='store_true', help='whether to synthesize')
+    add_arg('--strategy', type=str, default='Latency', help='latency or resource optimized design')
     args = parser.parse_args()
     return args
 
@@ -41,22 +44,28 @@ def get_utilization(synth_file):
     
     parts = ['BRAM_18K', 'DSP48E', 'FF', 'LUT', 'URAM']
     zcu_total = [1824, 2520, 548160, 274080]
-    highflex_total = [None, 2928,597120, 298560]
+    highflex_total = [1200, 2928,597120, 298560]
     versal_total = [None, 1968, None, 899840]
 
     with open(synth_file, 'r') as f:
-        for line in f.readlines()[2:]:
+        lines = f.readlines()[2:90]
+        for i,line in enumerate(lines):
             if '|Total            |' in line:
                 util = list(map(int, line.split('|')[2:6]))
-    return parts, util, zcu_total, highflex_total, versal_total
+            if '+ Latency:' in line:
+                latencies = list(map(str, lines[i+6].split('|')[1:7]))
+                latencies = [i.strip(' us') for i in latencies]
+    return parts, util, zcu_total, highflex_total, versal_total, latencies
                 
 def main():
     args = parse_args()
-    graph_indir='data/graphs'
+    graph_indir='data/graphs_seg_1_pzmin_0.001_slopemax_2.0'
     n_neurons = config['n_neurons']
-    trained_model_dir = f'models/optimization/best/best_model_hidden_dim_{n_neurons}.pt'
-    output_dir = f'hls_output/par_scans_HF/{key}_{par}'
-    
+    run = config['run']
+    trained_model_dir = f'models/optimization_seg_1/best/best_model_nevents_1000_hidden_dim_{n_neurons}.pt'
+    output_dir = f'hls_output/par_scans_{run}/{key}_{par}'
+
+    os.makedirs(output_dir, exist_ok=True)
     
     graph_dims = {
         "n_node": config['n_nodes'],
@@ -64,20 +73,35 @@ def main():
         "node_dim": config['node_dim'],
         "edge_dim": config['edge_dim']
     }
-    hls_model = load_models(trained_model_dir, output_dir=output_dir, n_neurons=config['n_neurons'], precision=config['precision'], reuse=config['reuse'], part=args.part, graph_dims=graph_dims)
+    hls_model = load_models(trained_model_dir, 
+                            output_dir=output_dir, 
+                            n_neurons=config['n_neurons'], 
+                            precision=config['precision'], 
+                            reuse=config['reuse'], 
+                            part=args.part, 
+                            graph_dims=graph_dims,
+                            strategy=args.strategy)
     hls_model.compile()
     # graphs = load_graphs(graph_indir, output_dir, graph_dims, 100) #add testbench data
 
     if args.synth:
 	    hls_model.build(csim=False,synth=True)
 
-    parts, util, zcu_total, highflex_total, versal_total = get_utilization(f'{output_dir}/myproject_prj/solution1/syn/report/myproject_csynth.rpt')
+    parts, util, zcu_total, highflex_total, versal_total, latencies = get_utilization(f'{output_dir}/myproject_prj/solution1/syn/report/myproject_csynth.rpt')
 
 
     f.write(f'{config} \n')
     t_seconds = (time()-t0) %60
     t_minutes = (time()-t0) /60
     f.write(f'compilation time: {int(t_minutes)}min {int(t_seconds)}s \n')
+
+    f.write('===================== \n')
+    f.write('Highflex Latency (cycles, absolute, Interval) min/max:  \n')
+    f.write('=====================  \n')
+    f.write(str(latencies)+'\n')
+        
+    f.write('\n')
+
     f.write('===================== \n')
     f.write('Total utilization:  \n')
     f.write('=====================  \n')
@@ -127,47 +151,47 @@ def main():
 if __name__=="__main__":
 
     scans = {
-        # 'reuse': np.arange(1,20), 
+        # 'reuse': np.arange(2,20), 
+        'reuse': [8,16,32,1]
         # 'precision': np.arange(8,34,2), 
-        # 'n_neurons': np.arange(1,10),
-        # 'n_edges': np.arange(5,20,5),
-        'n_nodes': np.arange(5,35,5)
+        # 'n_neurons': np.arange(3,4),
+        # 'n_edges': np.arange(5,50,5),
+        # 'n_nodes': np.arange(45,55,5)
     }
-
-
 
     for key, value in scans.items():
         config = {
-            'n_nodes': 5,
-            'n_edges': 5,
-            'node_dim': 3,
-            'edge_dim': 3,
+            'n_nodes': 49,
+            'n_edges': 98,
+            'node_dim': 2,
+            'edge_dim': 2,
             'n_neurons': 6,
             'precision': 'ap_fixed<16,8>', 
-            'reuse' : 1 
+            'run': '49to98_resource_reuse',
+            'reuse' : 8,
         }
 
-        # for par in value:
-        #     f = open(f'hls4ml_parameter_scan_HF.txt', 'a')
-        #     if key == 'precision':
-        #         par = f'ap_fixed<{par},{int(par/2)}>'
-        #     print(par)
-        #     config[key] = par
-        #     t0 = time()
-        #     f.write('====================================================== \n')
-        #     f.write(f'scan for {key} in range {value}\n')
-        #     f.write('====================================================== \n' )
-        #     main()
-        #     f.close()
-
         for par in value:
-            f = open(f'hls4ml_parameter_scan_HF.txt', 'a')
+            f = open(f'hls4ml_parameter_scan_{config["run"]}.txt', 'a')
+            if key == 'precision':
+                par = f'ap_fixed<{par},{int(par/2)}>'
             print(par)
             config[key] = par
-            config['n_edges'] = 2*config['n_nodes']
             t0 = time()
             f.write('====================================================== \n')
-            f.write(f'scan for n_nodes&2n_edges in range {value} \n')
+            f.write(f'scan for {key} in range {value}\n')
             f.write('====================================================== \n' )
             main()
             f.close()
+
+        # for par in value:
+        #     f = open(f'hls4ml_parameter_scan_{config["run"]}.txt', 'a')
+        #     print(par)
+        #     config[key] = par
+        #     config['n_edges'] = 2*config['n_nodes']
+        #     t0 = time()
+        #     f.write('====================================================== \n')
+        #     f.write(f'scan for n_nodes&2n_edges in range {value} \n')
+        #     f.write('====================================================== \n' )
+        #     main()
+        #     f.close()

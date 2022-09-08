@@ -17,3 +17,7 @@ hls4ml_test.py
 train_output
 utils/training/train_dezoort.py
 data/
+test.py
+par_scans*
+Master_Thesis*
+stream_*

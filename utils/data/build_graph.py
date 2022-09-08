@@ -22,15 +22,17 @@ from collections import namedtuple
 
 class build_graphs:
     
-    def __init__(self, events, start=0, end=None, shuffle=True,  pz_min=0.003, remove_duplicates=True, slope=0.6):
+    def __init__(self, events, start=0, end=None, shuffle=True,  pz_min=0.003, remove_duplicates=True, slope=0.6, graph_dir='data/graphs'):
         self.raw = events
         self.start = start
         self.end = end
         self.shuffle = shuffle
         self.pz_min = pz_min #GeV
         self.remove_duplicates = remove_duplicates
-        self.slope = slope        
+        self.slope = slope       
+        self.graph_dir = graph_dir 
         self.events = self.preprocess()
+
 
     def remove_skewed_layers(self, df):
         return df.loc[df.skewed==0]
@@ -75,7 +77,21 @@ class build_graphs:
             hits = hits.drop_duplicates(subset=('event_id', 'particle_id', 'layer'))
             
         return hits.set_index('event_id')
-    
+
+    def save_graphs(self, graphs):
+        os.makedirs(self.graph_dir, exist_ok=True)  
+
+        data_paths = [i for i in (os.path.join(self.graph_dir, f) for f in os.listdir(self.graph_dir)) if os.path.isfile(i)]
+        for f in data_paths:
+            os.remove(f)
+
+        for graph in graphs:
+            evID = graph.pid.index.unique()[0]
+            x, edge_attr, edge_index, y, pid = graph
+            arr = np.asanyarray([x, edge_attr, edge_index, y, pid], dtype=object)
+                
+            np.save(os.path.join(self.graph_dir, f'graph_{evID}.npy'), arr)
+
 
     def create_graph_list(self,node_dim, edge_dim, minlayer=0, maxlayer=24, show_progress=True, dtype=object):
         evs = self.events
@@ -138,7 +154,11 @@ class build_graphs:
             pid = df.particle_id
             G = Graph(X[:,:node_dim], edge_attr[:edge_dim,:], edge_index, y, pid)
             graphs.append(G)
-        
+
+        self.save_graphs(graphs)
+        print(f'graphs saved to {self.graph_dir}')
+
         return graphs
    
+
 

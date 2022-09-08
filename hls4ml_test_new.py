@@ -32,16 +32,16 @@ def parse_args():
     parser = argparse.ArgumentParser()
     add_arg = parser.add_argument
     add_arg('--n-graphs', type=int, default=100)
-    add_arg('--n-nodes', type=int, default=100)
-    add_arg('--n-edges', type=int, default=200)
-    add_arg('--node-dim', type=int, default=3)
-    add_arg('--edge-dim', type=int, default=3)	
+    add_arg('--n-nodes', type=int, default=5)
+    add_arg('--n-edges', type=int, default=10)
+    add_arg('--node-dim', type=int, default=2)
+    add_arg('--edge-dim', type=int, default=2)	
     add_arg('--n-neurons', type=int, default=6)
     add_arg('--precision', type=str, default='ap_fixed<16,8>', help='precision to use')
     add_arg('--reuse', type=int, default=1, help="reuse factor")
     add_arg('--strategy', type=str, default='latency', help='latency or throughput optimized design')
-    add_arg('--output-dir', type=str, default="hls_output/ZCU102_new", help='output directory')
-    add_arg('--part', type=str, default='xczu9eg-ffvb1156-2-e', help='for which fpga board to compile')
+    add_arg('--output-dir', type=str, default="hls_output/test", help='output directory')
+    add_arg('--part', type=str, default='xczu11eg-ffvc1760-2-e', help='for which fpga board to compile')
     add_arg('--synth',action='store_true', help='whether to synthesize')
     args = parser.parse_args()
     return args
@@ -49,8 +49,8 @@ def parse_args():
 
 def main():
     args = parse_args()
-    graph_indir='data/graphs'
-    trained_model_dir = 'models/optimization/best/best_model_hidden_dim_6.pt'
+    graph_indir='data/graphs_seg_1_pzmin_0.001_slopemax_2.0/'
+    trained_model_dir = 'models/optimization_seg_1/best/best_model_nevents_1000_hidden_dim_6.pt'
     
     
     graph_dims = {
@@ -62,7 +62,14 @@ def main():
     
     #graphs = load_graphs(graph_indir, args.output_dir, graph_dims, 100)
 
-    hls_model = load_models(trained_model_dir, output_dir=args.output_dir, n_neurons=args.n_neurons, precision=args.precision, reuse=args.reuse, part=args.part, graph_dims=graph_dims, strategy=args.strategy)
+    hls_model = load_models(trained_model_dir, 
+                            output_dir=args.output_dir, 
+                            n_neurons=args.n_neurons, 
+                            precision=args.precision, 
+                            reuse=args.reuse, 
+                            part=args.part, 
+                            graph_dims=graph_dims,
+                            strategy=args.strategy)
     hls_model.compile()
 
     if args.synth:

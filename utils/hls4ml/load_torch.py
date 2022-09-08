@@ -70,7 +70,7 @@ def load_graphs(graph_indir, out_dir, graph_dims, n_graphs):
 
 
 
-def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_dims, hls_only=True, strategy='latency'):
+def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_dims, hls_only=True, strategy='Latency'):
     
     if 'dict' in model_dir:
         torch_model = InteractionNetwork(hidden_size=n_neurons)
@@ -91,8 +91,9 @@ def load_models(model_dir, output_dir, n_neurons, precision, reuse, part, graph_
     config = config_from_pyg_model(torch_model,
                                    default_precision=precision,
                                    default_index_precision='ap_uint<16>', 
-                                   default_reuse_factor=reuse,
-                                   default_strategy=strategy)
+                                   default_reuse_factor=reuse, 
+                                   default_strategy=strategy
+                                   )
     hls_model = convert_from_pyg_model(torch_model,
                                        forward_dictionary=forward_dict,
                                        **graph_dims,
