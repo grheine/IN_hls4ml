@@ -1,10 +1,10 @@
+import os
 import torch
 import torchmetrics
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.optim.lr_scheduler import StepLR
-torch.manual_seed(42)
 
 from time import time
 from tqdm import tqdm
@@ -16,7 +16,7 @@ from utils.training.pytorchtools import EarlyStopping
 
 class train_model:
     
-    def __init__(self, train_loader, val_loader, model, optimizer, scheduler, device='cpu', epochs=30, patience=5, name='trained_IN'):
+    def __init__(self, train_loader, val_loader, model, optimizer, scheduler, device='cpu', epochs=30, patience=5, run='full_graph', name='IN_trained'):
         
         self.model = model
         self.optimizer = optimizer
@@ -26,6 +26,7 @@ class train_model:
         self.device = device
         self.epochs = epochs
         self.patience = patience
+        self.run = run
         self.name = name
         self.trained = self.train_model()
 
@@ -76,7 +77,10 @@ class train_model:
 
     def train_model(self):
         # initialize the early_stopping object
-        early_stopping = EarlyStopping(patience=self.patience, verbose=True)
+        os.makedirs(f'models/{self.run}', exist_ok=True)
+        os.makedirs(f'train_output/{self.run}', exist_ok=True)
+
+        early_stopping = EarlyStopping(patience=self.patience, verbose=True, path=f'models/checkpoint_{self.run}.pt')
 
         losses, accs = [], []
         val_losses, val_accs = [], []       
@@ -102,13 +106,13 @@ class train_model:
             output['val_acc'].append(val_acc)
 
         nevents = len(self.train_loader)
-        np.save(f'train_output/train_{nevents}', output)
+        np.save(f'train_output/{self.run}/{self.name}', output)
                 
         #save best model
-        self.model.load_state_dict(torch.load('models/checkpoint.pt'))
+        self.model.load_state_dict(torch.load(f'models/checkpoint_{self.run}.pt'))
         trained_model = copy.deepcopy(self.model)
 
-        torch.save(self.model.state_dict(), f"models/{self.name}_state_dict.pt")
-        torch.save(self.model, f'models/{self.name}.pt')
+        torch.save(self.model.state_dict(), f"models/{self.run}/{self.name}_state_dict.pt")
+        torch.save(self.model, f'models/{self.run}/{self.name}.pt')
         
         return  self.model, output

@@ -9,9 +9,11 @@ from ..plotting.plot import watermark
 
 class evaluate_data:
     
-    def __init__(self, events, ncuts=20):
+    def __init__(self, events, ncuts=20, nevents=None, name=''):
+        self.name = name
         self.events = events
         self.ncuts = ncuts
+        self.nevents = nevents
         self.hits_curler = self.curler()
 
     def curler(self):
@@ -56,7 +58,9 @@ class evaluate_data:
     def curler_dist(self):
                
         df = self.hits_curler
-        nevents = len(self.events.index.unique(level=0))
+
+        if self.nevents==None:
+            self.nevents = len(self.events.index.unique(level=0))
         
         curler = df[df.curler].groupby(['event_id', 'particle_id']).pz.mean()
         nocurler = df[df.curler == False].groupby(['event_id', 'particle_id']).pz.mean()
@@ -66,19 +70,21 @@ class evaluate_data:
         hist = plt.hist(curler, bins=20, histtype='stepfilled', facecolor='white', label='curler')
         plt.yscale('log')
         
-        infos = r'$N_{events}=$'+ f'{nevents}'
+        infos = r'$N_{events}=$'+ f'{self.nevents}'
         watermark(scale=1.3, information=infos)
 
-        plt.xlabel(r'log($p_z$/(GeV/c))')
+        plt.xlabel(r'$p_z$ (GeV/c)')
         binwidth = np.mean(np.diff(hist[1]))
         plt.ylabel(f'Entries / ({binwidth:.2f} GeV/c)')
         plt.legend()
-        plt.savefig('img/3_curler_histo.pdf', bbox_inches='tight')
+        plt.savefig(f'img/3_curler_histo_{self.name}.pdf', bbox_inches='tight')
         plt.show()
 
 class evaluate_graphs():
     
-    def __init__(self, data, graphs, show_false=False, skip_duplicates=True, skip_same_layer=False):
+    def __init__(self, data, graphs, show_false=False, skip_duplicates=True, skip_same_layer=False, name=''):
+
+        self.name = name
         self.data = data
         self.graphs = graphs
         self.show_false = show_false

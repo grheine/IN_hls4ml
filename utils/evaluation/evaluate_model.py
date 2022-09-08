@@ -4,16 +4,18 @@ from sklearn.metrics import roc_curve, auc, ConfusionMatrixDisplay, confusion_ma
 from tqdm import tqdm
 
 import matplotlib.pyplot as plt
-from utils.plotting.plot import watermark
+from utils.plotting.plot import watermark, infotext
 
 
 
 class evaluate_model:
     
-    def __init__(self, model, test_data, pz_min, slope_max, train_output={}, cut=0.5, ncuts=100, name=''):
+    def __init__(self, model, test_data, pz_min, slope_max, nevents, train_output={}, cut=0.5, ncuts=100, name='', title=''):
         self.name = name
+        self.title = title
         self.model = model
-        self.infos = r'$N_{events}=$'+ f'{len(test_data)},  ' + r'$p_z^{min}= $'+f'{pz_min} GeV/c' + r',  $s^{max}= $'+f'{slope_max}'
+        self.infos = infotext(None, pz_min, slope_max, None, nevents)
+        self.infos2 = infotext(ntest=len(test_data))
         self.train_output = train_output
         self.cut = cut
         self.minposs = -1
@@ -26,18 +28,19 @@ class evaluate_model:
         MCtrue, MCfalse, targets, outputs = [], [], [], []
         for data in self.test_data:
             target = data.y
-            output = self.model(data).squeeze(1).detach().numpy()
             try:
-                MCtrue_output = output[target==True]
-                MCtrue_output = np.array([0])
-                MCfalse_output = output[target!=True]
-                MCfalse_output = np.array([0])
-                MCtrue+=list(MCtrue_output)
-                MCfalse+=list(MCfalse_output)
-                targets+= list(target.detach().numpy())
-                outputs+= list(output)
-            except IndexError:
-                print('empty output')
+                output = self.model(data).squeeze(1).detach().numpy()
+            except:
+                print('error')
+                continue
+
+            MCtrue_output = output[target==True]
+            MCfalse_output = output[target!=True]
+            MCtrue+=list(MCtrue_output)
+            MCfalse+=list(MCfalse_output)
+            targets+= list(target.detach().numpy())
+            outputs+= list(output)
+
         return targets, np.array(outputs), MCtrue, MCfalse
 
         
@@ -58,7 +61,8 @@ class evaluate_model:
         if self.minposs != n_epochs and early:
             plt.axvline(self.minposs, ymax=0.8, linestyle=':', color='black',label='Early Stopping')
 
-        watermark(scale=1.4, information=self.infos) 
+        watermark(scale=1.4, information=self.infos)
+        plt.title(self.title, loc='right', color='#666666')
         plt.legend(loc='center right', frameon = True, framealpha = 1, facecolor = 'white', edgecolor = 'white')
         plt.xlabel('epochs')
         plt.ylabel('loss')
@@ -82,7 +86,8 @@ class evaluate_model:
 
         plt.xlabel('epochs')
         plt.ylabel('accuracy')
-        watermark(scale=1.3, information=self.infos) 
+        watermark(scale=1.4, information=self.infos)
+        plt.title(self.title, loc='right', color='#666666')
         plt.legend(loc='lower right', frameon = True, framealpha = 1, facecolor = 'white', edgecolor = 'white')
         plt.savefig(f'img/3_acc_{self.name}.pdf', bbox_inches='tight')
         plt.show()
@@ -90,20 +95,24 @@ class evaluate_model:
     def plot_GNNoutput(self, bins=30, scale=1.6):
         plt.style.use("kit_hist")
         hist = plt.hist([self.MCtrue_output, self.MCfalse_output], bins=bins, histtype='stepfilled', facecolor='white',stacked=True, label=['MC true edge', 'MC false edge'])
+        all_output = np.concatenate([self.MCtrue_output, self.MCfalse_output])
+        plt.style.use("kit")
+        hist_full = plt.hist(all_output, bins=bins, histtype='step', lw=1.5, facecolor=(0,0,0,0), hatch=None)
         plt.yscale('log')
 #         plt.ylim(top=10e5)
-        watermark(scale=scale, information=self.infos) 
+        watermark(scale=1.4, information=self.infos, information2=self.infos2)
+        plt.title(self.title, loc='right', color='#666666')
         plt.xlabel('GNN output')
         binwidth = np.mean(np.diff(hist[1]))
         plt.ylabel(f'Entries / ({binwidth:.2f})')
-        plt.legend(bbox_to_anchor=(0.01,0.7), loc="center left")
+        plt.legend(bbox_to_anchor=(0.9,0.45), loc="center right")
         plt.savefig(f'img/3_GNNoutput_{self.name}.pdf', bbox_inches='tight')
         plt.show()
 
     def get_roc(self):
         fpr, tpr, thresholds = roc_curve(self.target, self.output)
         auc_val=auc(fpr, tpr)
-        return (fpr, tpr, auc_val)
+        return fpr, tpr, auc_val
         
     def plot_roc(self):
         
@@ -111,7 +120,8 @@ class evaluate_model:
         
         plt.style.use("kit")
         plt.plot(fpr, tpr, label='AUC = {1:.4f}'.format('$p$',auc_value), marker='None')
-        watermark(scale=1.4, information=self.infos) 
+        watermark(scale=1.4, information=self.infos, information2=self.infos2)
+        plt.title(self.title, loc='right', color='#666666')
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
         plt.legend(loc='lower right')
@@ -127,6 +137,7 @@ class evaluate_model:
         plt.xlabel(r'Predicted label with $\delta$ = ' + f'{cut:.3f}')
         plt.ylabel('MC True label')
         plt.yticks(rotation = 90)
+        plt.title(self.title, loc='right', color='#666666')
         plt.savefig(f'img/3_cm_{self.name}.pdf', bbox_inches='tight')
         plt.show()
  
@@ -173,7 +184,8 @@ class evaluate_model:
             plt.plot([], [], ' ', label=f'pur = {purity[cut_pos]:.3f}')
             plt.plot([], [], ' ', label=f'eff = {efficiency[cut_pos]:.3f}')
         
-        watermark(scale=1.5, information=self.infos) 
+        watermark(scale=1.4, information=self.infos, information2=self.infos2)
+        plt.title(self.title, loc='right', color='#666666')
         plt.xlabel(xname)
         if yname:
             plt.ylabel(yname)
@@ -189,4 +201,3 @@ class evaluate_model:
         purity, efficiency, cuts, cutPos, TNR, FNR = self.get_metrics()
         self.plot_purity_efficiency(cuts, cutPos, purity, efficiency, TNR, FNR, variable=r'$\delta$', xname=r'$\delta$', yname='purity & efficiency', save_name=f'img/3_edge_weight_pureff_{self.name}.pdf', loc='lower left')
         self.plot_confm(cut=cuts[cutPos])
-

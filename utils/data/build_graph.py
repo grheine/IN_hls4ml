@@ -34,6 +34,7 @@ class build_graphs:
         self.events = self.preprocess()
 
 
+
     def remove_skewed_layers(self, df):
         return df.loc[df.skewed==0]
     
@@ -92,6 +93,8 @@ class build_graphs:
                 
             np.save(os.path.join(self.graph_dir, f'graph_{evID}.npy'), arr)
 
+
+    
 
     def create_graph_list(self,node_dim, edge_dim, minlayer=0, maxlayer=24, show_progress=True, dtype=object):
         evs = self.events

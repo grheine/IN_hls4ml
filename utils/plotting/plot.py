@@ -1,8 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def infotext(nevents='', pzmin='', slopemax='', evID='', ntrain='', ntest=''):
+    
+    text = []
+    
+    if evID:
+        text.append(r'event ID = ' + str(evID))    
+    if nevents:
+        text.append(r'$N_{events}=$' + str(nevents))
+    if ntrain:
+        text.append(r'$N_{train}=$' + str(ntrain))
+    if ntest:
+        text.append(r'$N_{test}=$' + str(ntest))
+    if pzmin:
+        text.append(r'$p_z^{min}=$' + str(pzmin) + ' GeV/c')
+    if slopemax:
+        text.append(r'$s^{max}=$' + str(slopemax))
+        
+    infotext = ', '.join(text)
+    return infotext  
 
-def watermark(t=None,logo="PANDA", px=0.033, py=0.9, fontsize=18, information=None, t_color='#666666', alpha_logo=0.95, shift=0.16, bstyle='italic', scale = 1.4, *args, **kwargs):
+def watermark(t=None,logo="PANDA", px=0.033, py=0.9, fontsize=18, information=None, information2=None, t_color='#666666', alpha_logo=0.95, shift=0.16, bstyle='italic', scale = 1.4, *args, **kwargs):
     """
     Args:
         t:
@@ -48,4 +67,7 @@ def watermark(t=None,logo="PANDA", px=0.033, py=0.9, fontsize=18, information=No
              # bbox={'facecolor':'#377eb7', 'alpha':0.1, 'pad':10}
              )
     plt.text(px, py-0.08, information, transform=plt.gca().transAxes, fontsize=16)
+    plt.text(px, py-0.16, information2, transform=plt.gca().transAxes, fontsize=16)
+
+
 

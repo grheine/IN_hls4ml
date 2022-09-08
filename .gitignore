@@ -11,6 +11,7 @@ vivado*
 playground*
 .*
 hls_output*
+hls_metrics/
 *__pycache__*
 hls4ml_test.py
 ./data/
